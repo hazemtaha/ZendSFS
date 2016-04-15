@@ -1,0 +1,19 @@
+<?php echo $this->doctype() ?>
+<html>
+  <head>
+    <?php echo $this->headMeta(); ?>
+  	<?php echo $this->headTitle() ?>
+  	<?php echo $this->headLink() ?>
+  </head>
+  <body
+    <!--  Site Content -->
+    <div class="container">
+      <p>
+        Hello World
+      </p>
+      <?php echo $this->layout()->content; ?>
+    </div>
+    <!--  Java Scripts Includes -->
+    <?php echo $this->headScript() ?>
+  </body>
+</html>

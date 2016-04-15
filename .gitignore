@@ -1,0 +1,60 @@
+
+# Created by https://www.gitignore.io/api/linux,sublimetext,zendframework
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+
+### ZendFramework ###
+# Composer files
+composer.phar
+vendor/
+
+# Local configs
+config/autoload/*.local.php
+
+# Binary gettext files
+*.mo
+
+# Data
+data/logs/
+data/cache/
+data/sessions/
+data/tmp/
+temp/
+
+#Doctrine 2
+data/DoctrineORMModule/Proxy/
+data/DoctrineORMModule/cache/
+
+
+# Legacy ZF1
+demos/
+extras/documentation
+
