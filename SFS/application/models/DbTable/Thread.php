@@ -26,4 +26,14 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
 
         return $this->fetchAll($threads);
     }
+    function addThread($data) {
+        $user = Zend_Auth::getInstance();
+        $userObj = $user->getIdentity();
+        $thread = $this->createRow();
+        $thread->title = $data['title'];
+        $thread->body = $data['body'];
+        $thread->forum_id = $data['forum'];
+        $thread->creator = $userObj->u_id;
+        return $thread->save();
+    }
 }

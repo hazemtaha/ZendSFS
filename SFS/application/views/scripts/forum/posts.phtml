@@ -7,8 +7,12 @@
 		<div class="well well-sm">
 			There Is No Threads To List :(
 		</div>
-		<?php else :
-    	foreach ($this->paginator as $thread) : ?>
+    <?php else : ?>
+    <div class="">
+      <a href="<?php echo $this->baseUrl() ?>/thread/add/forum/<?php echo $this->forumId ?>" class="btn btn-default">Add Post</a>
+    </div>
+    <br>
+    <?php	foreach ($this->paginator as $thread) : ?>
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title" id="title<?php echo $thread['thread_id'] ?>"><a href="<?php echo $this->baseUrl() ?>/thread/id/<?php echo $this->$thread['thread_id'];?>"><?php echo $thread['title'] ?></a></h3><small>Created By : <?php echo $thread['username']?> | On: <?php echo $thread['creation_date']?> | Replies : <?php echo $thread['replies_no'] ?></small>

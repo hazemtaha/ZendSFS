@@ -16,7 +16,16 @@ class ThreadController extends Zend_Controller_Action
 
     public function addAction()
     {
-        // action body
+        $reqParams = $this->getRequest()->getParams();
+        $form = new Application_Form_Thread();
+        if ($this->getRequest()->isPost()) {
+            if ($form->isValid($reqParams)) {
+                if ($this->thread->addThread($reqParams)) {
+                    $this->redirect('forum/posts/id/'.$reqParams['forum']);
+                }
+            }
+        }
+        $this->view->form = $form;
     }
 
     public function deleteAction()

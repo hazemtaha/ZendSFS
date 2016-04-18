@@ -46,6 +46,7 @@
       <formsDirectory>
         <formFile formName="Login"/>
         <formFile formName="Register"/>
+        <formFile formName="Thread"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>

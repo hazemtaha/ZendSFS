@@ -31,9 +31,10 @@ class ForumController extends Zend_Controller_Action
         $threads = $this->thread->getThreadsByForum($fId);
         if (isset($threads)) {
         $paginator = Zend_Paginator::factory($threads);
-        $paginator->setItemCountPerPage(3);
+        $paginator->setItemCountPerPage(5);
         $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
         $this->view->paginator = $paginator;
+        $this->view->forumId = $fId;
         Zend_Paginator::setDefaultScrollingStyle('Sliding');
         Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
       }
