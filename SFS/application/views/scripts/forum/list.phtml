@@ -1,0 +1,16 @@
+<?php foreach ($this->categories as $category) :?>
+<div class="panel panel-primary">
+	<div class="panel panel-heading">
+		<strong><?php echo $category['cat_name']; ?></strong>
+	</div>
+	<div class="panel panel-body">
+		<?php foreach ($this->forums as $forum): ?>
+			<?php if ($forum['cat_id'] == $category['cat_id']): ?>
+				<div class="alert alert-info">
+					<a href="<?php echo $this->baseUrl() ?>/forum/posts/id/<?php echo $forum['id'];?> " class="text-success"><?php echo $forum['name']?></a>
+				</div>
+			<?php endif ?>
+		<?php  endforeach; ?>
+	</div>
+</div>
+<?php endforeach;?>

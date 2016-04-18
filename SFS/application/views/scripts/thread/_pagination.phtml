@@ -1,0 +1,24 @@
+<hr>
+<ul class="pager">
+  <?php if (isset($this->previous)): ?>
+    <li class="previous"><a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&larr; Previous</a></li>
+  <?php else: ?>
+    <li class="previous disabled"><a>&larr; Previous</a></li>
+  <?php endif; ?>
+  <ul class="pagination">
+  <?php foreach ($this->pagesInRange as $page): ?>
+    <?php if ($page != $this->current): ?>
+      <li><a href="<?php echo $this->url(array('page' => $page)); ?>">
+          <?php echo $page; ?>
+      </a></li>
+    <?php else: ?>
+      <li class="disabled"><a><b><?php echo $page; ?></b></a></li>
+    <?php endif; ?>
+  <?php endforeach; ?>
+  </ul>
+  <?php if(isset($this->next)): ?>
+	  <li class="next"><a href="<?php echo $this->url(array('page' => $this->next)); ?>">Next &rarr;</a></li>
+  <?php else: ?>
+    <li class="next disabled"><a>Next &rarr;</a></li>
+  <?php endif; ?>
+</ul>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configdata>
+  <nav>
+    <label>Home</label>
+    <controller>forum</controller>
+    <action>list</action>
+    <pages>
+      <add>
+        <label>Forum</label>
+        <controller>forum</controller>
+        <action>posts</action>
+        <pages>
+          <detail>
+            <label>Details</label>
+            <controller>thread</controller>
+            <action>detail</action>
+          </detail>
+        </pages>
+      </add>
+
+      <admin>
+        <label>Admin</label>
+        <controller>users</controller>
+        <action>admin</action>
+      </admin>
+      <login>
+        <label>Login</label>
+        <controller>users</controller>
+        <action>login</action>
+      </login>
+      <register>
+        <label>Register</label>
+        <controller>users</controller>
+        <action>add</action>
+      </register>
+    </pages>
+  </nav>
+</configdata>

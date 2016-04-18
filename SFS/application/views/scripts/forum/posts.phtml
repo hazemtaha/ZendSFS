@@ -1,0 +1,36 @@
+
+<?php
+    // javascript file to handle the edit functionality
+    // $this->headScript()->appendFile($this->baseUrl().'/js/edit.js');
+    // if (count($this->threads) == 0)
+    if (!count($this->paginator)) : ?>
+		<div class="well well-sm">
+			There Is No Threads To List :(
+		</div>
+		<?php else :
+    	foreach ($this->paginator as $thread) : ?>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title" id="title<?php echo $thread['thread_id'] ?>"><a href="<?php echo $this->baseUrl() ?>/thread/id/<?php echo $this->$thread['thread_id'];?>"><?php echo $thread['title'] ?></a></h3><small>Created By : <?php echo $thread['username']?> | On: <?php echo $thread['creation_date']?> | Replies : <?php echo $thread['replies_no'] ?></small>
+			</div>
+			<div class="panel-footer">
+				<?php
+                    $user = Zend_Auth::getInstance();
+                    if ($user->hasIdentity()):
+                        $userObj = $user->getIdentity();
+                        if ($thread['creator'] == $userObj->u_id || $userObj->is_admin):
+                            ?>
+				<a href="#editModal" data-toggle="modal" id="<?php echo $thread['thread_id'] ?>" class="btn btn-warning edit">Edit</a>
+				<a class="btn btn-danger delete-thread">Delete</a>
+				<?php
+												endif;
+										endif;
+				?>
+				<a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id'] ?>" class="btn btn-info">Detail</a>
+			</div>
+		</div>
+<?php
+    endforeach;
+endif;
+echo $this->paginator;
+?>
