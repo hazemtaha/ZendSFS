@@ -42,7 +42,12 @@ class ThreadController extends Zend_Controller_Action
 
     public function editAction()
     {
-        // action body
+        $reqParams = $this->getRequest()->getParams();
+        if ($this->getRequest()->isPost()) {
+            $this->thread->editThread($reqParams);
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function listAction()

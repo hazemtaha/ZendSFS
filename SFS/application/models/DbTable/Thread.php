@@ -39,4 +39,12 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
     function deleteThread($threadId) {
         return $this->delete("thread_id=$threadId");
     }
+    function editThread($data) {
+        $newPost = array(
+            'title'             => $data['title'],
+            'body'              => $data['body'],
+            'last_update_date'  => new Zend_Date() 
+            );
+        return $this->update($newPost,"thread_id=".$data['id']);
+    }
 }
