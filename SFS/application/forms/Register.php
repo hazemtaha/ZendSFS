@@ -49,7 +49,7 @@ class Application_Form_Register extends Zend_Form
 
         $image = new Zend_Form_Element_File('picture');
         $image->setLabel('Upload an image:');
-      	$image->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
+      	$image->setDestination(APPLICATION_PATH.'/../public/user-uploads/');
       	$image->setRequired(true);
       	$image->setMaxFileSize(2097152); // limits the filesize on the client side
       	// $image->setDescription('Click Browse and click on the image file you would like to upload');

@@ -1,7 +1,7 @@
 
 <?php
     // javascript file to handle the edit functionality
-    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete.js');
+    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
     // if (count($this->threads) == 0)
     $user = Zend_Auth::getInstance();
     if ($user->hasIdentity()):
