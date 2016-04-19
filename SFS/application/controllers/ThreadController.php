@@ -11,7 +11,7 @@ class ThreadController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $this->redirect('/forum/list');
     }
 
     public function addAction()
@@ -30,12 +30,24 @@ class ThreadController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        // action body
+        if ($this->getRequest()->isPost()) {
+            $threadId = $this->getRequest()->getParam('id');
+            if ($threadId) {
+                $this->thread->deleteThread($threadId);
+            }
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function editAction()
     {
-        // action body
+        $reqParams = $this->getRequest()->getParams();
+        if ($this->getRequest()->isPost()) {
+            $this->thread->editThread($reqParams);
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function listAction()

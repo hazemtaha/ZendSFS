@@ -45,6 +45,7 @@ class Application_Form_Register extends Zend_Form {
 			));
 		$country->setAttrib('class', 'form-control');
 
+<<<<<<< HEAD
 		$image = new Zend_Form_Element_File('picture');
 		$image->setLabel('Upload an image:');
 		// $image->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
@@ -55,6 +56,16 @@ class Application_Form_Register extends Zend_Form {
 		// $image->setDescription('Click Browse and click on the image file you would like to upload');
 		$image->addValidator('Count', false, 1);// ensure only 1 file
 		$image->addValidator('Size', false, 2097152);// limit to 10 meg
+=======
+        $image = new Zend_Form_Element_File('picture');
+        $image->setLabel('Upload an image:');
+      	$image->setDestination(APPLICATION_PATH.'/../public/user-uploads/');
+      	$image->setRequired(true);
+      	$image->setMaxFileSize(2097152); // limits the filesize on the client side
+      	// $image->setDescription('Click Browse and click on the image file you would like to upload');
+        $image->addValidator('Count', false, 1);                // ensure only 1 file
+		$image->addValidator('Size', false, 2097152);            // limit to 10 meg
+>>>>>>> adf089f2eadd11396ca9b69bd6f689d41d8d2688
 		$image->addValidator('Extension', false, 'jpg,jpeg,png,gif');// only JPEG, PNG, and GIFs
 		$image->setValueDisabled(true);
 		$submit = new Zend_Form_Element_Submit('submit');
