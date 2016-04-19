@@ -21,4 +21,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $session = new Zend_Session_Namespace('Zend_Auth');
       $session->setExpirationSeconds(1800);
   }
+  protected function _initNavigationConfig()
+  {
+      $this->bootstrap('layout');
+      $layout = $this->getResource('layout');
+      $view = $layout->getView();
+      $config = new Zend_Config_Xml(APPLICATION_PATH.'/configs/navigation.xml');
+      $navigation = new Zend_Navigation($config);
+      $view->navigation($navigation);
+  }
 }

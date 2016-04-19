@@ -1,0 +1,7 @@
+<?php if (isset($this->error)) : ?>
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	<strong><?php echo $this->error ?></strong>
+</div>
+<?php endif; ?>
+<?php echo $this->form; ?>

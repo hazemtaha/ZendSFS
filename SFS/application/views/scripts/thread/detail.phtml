@@ -1,0 +1,84 @@
+<?php 	
+	// javascript file to handle the edit functionality
+	// $this->headScript()->appendFile($this->baseUrl().'/js/edit.js');
+	// echo $this->headTitle()->append($this->thread[0]['title']);
+?>
+<hr>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong id="title<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['title'] ?></strong></h3><small>threaded By : <?php echo $this->thread[0]['username']?> | On: <?php echo $this->thread[0]['creation_date']?></small>
+	</div>
+	<div class="panel-body">
+		<p id="body<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['body'] ?></p>
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">replies (<u id="cmntsCount"><?php echo count($this->replies) ?></u>)</h3>
+		</div>
+		<div class="panel-body">
+		<div id="replysArea">
+			<?php 
+			if (!count($this->replies)): ?>
+				<div class="alert alert-warning">
+					<strong>No Replies Yet</strong>
+				</div>
+			<?php else:
+			foreach ($this->replies as $reply) : ?>
+				<div>
+					<div class="col-sm-offset-1 col-sm-10 panel panel-warning">
+						<div class="panel-heading">
+							<?php echo 'By :'.$reply['username'].' | On : '.$reply['creation_date']?>
+						</div>
+						<div class="panel-body">
+							<?php echo $reply['body']; ?> 	
+						</div>
+					</div>
+					<?php 
+						$user = Zend_Auth::getInstance();
+						if ($user->hasIdentity()) :
+							$userObj = $user->getIdentity();
+							if ($reply['replier_id'] == $userObj->u_id || $userObj->is_admin) :
+					?>
+					<div class="col-sm-1">
+						<a id="delete<?php echo $reply['id'] ?>" class="btn btn-danger delete">X</a>
+					</div>
+					<?php
+						endif;
+							endif; 
+					?>
+				</div>
+			<?php endforeach; endif; ?>
+			<?php 
+				$user = Zend_Auth::getInstance();
+				if ($user->hasIdentity()) :
+			?>
+		</div>
+			<div class="form-group">
+				<label for="textarea" class="col-sm-2 control-label">reply</label>
+				<div class="col-sm-10">
+					<textarea name="" id="replyBody" class="form-control" rows="3" required="required"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-10 col-offset-2">
+					<button class="btn btn-primary reply" id="reply<?php echo $this->thread[0]['thread_id'] ?>">reply</button>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
+	</div>
+	<?php 
+		$user = Zend_Auth::getInstance();
+		if ($user->hasIdentity()) :
+			$userObj = $user->getIdentity();
+			if ($this->thread[0]['creator'] == $userObj->u_id) :
+	?>
+	<div class="panel-footer">		
+		<a href="#editModal" data-toggle="modal" id="<?php echo $this->thread[0]['thread_id'] ?>" class="btn btn-warning edit" >Edit</a>
+		<a id="detail-view" class="btn btn-danger delete-thread">Delete</a>
+	</div>
+	<?php 
+		endif; 
+			endif;
+	 ?>
+</div>
