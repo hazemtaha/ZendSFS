@@ -1,6 +1,6 @@
-<?php 	
+<?php
 	// javascript file to handle the edit functionality
-	// $this->headScript()->appendFile($this->baseUrl().'/js/edit.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete.js');
 	// echo $this->headTitle()->append($this->thread[0]['title']);
 ?>
 <hr>
@@ -17,7 +17,7 @@
 		</div>
 		<div class="panel-body">
 		<div id="replysArea">
-			<?php 
+			<?php
 			if (!count($this->replies)): ?>
 				<div class="alert alert-warning">
 					<strong>No Replies Yet</strong>
@@ -30,10 +30,10 @@
 							<?php echo 'By :'.$reply['username'].' | On : '.$reply['creation_date']?>
 						</div>
 						<div class="panel-body">
-							<?php echo $reply['body']; ?> 	
+							<?php echo $reply['body']; ?>
 						</div>
 					</div>
-					<?php 
+					<?php
 						$user = Zend_Auth::getInstance();
 						if ($user->hasIdentity()) :
 							$userObj = $user->getIdentity();
@@ -44,11 +44,11 @@
 					</div>
 					<?php
 						endif;
-							endif; 
+							endif;
 					?>
 				</div>
 			<?php endforeach; endif; ?>
-			<?php 
+			<?php
 				$user = Zend_Auth::getInstance();
 				if ($user->hasIdentity()) :
 			?>
@@ -67,18 +67,19 @@
 		</div>
 		<?php endif; ?>
 	</div>
-	<?php 
+	<?php
 		$user = Zend_Auth::getInstance();
 		if ($user->hasIdentity()) :
 			$userObj = $user->getIdentity();
 			if ($this->thread[0]['creator'] == $userObj->u_id) :
 	?>
-	<div class="panel-footer">		
+	<div class="panel-footer">
 		<a href="#editModal" data-toggle="modal" id="<?php echo $this->thread[0]['thread_id'] ?>" class="btn btn-warning edit" >Edit</a>
-		<a id="detail-view" class="btn btn-danger delete-thread">Delete</a>
+		<a id="delete<?php echo $this->thread[0]['thread_id']; ?>" name='detail-delete' class="btn btn-danger delete-thread">Delete</a>
 	</div>
-	<?php 
-		endif; 
+	<?php
+		endif;
 			endif;
 	 ?>
+	 <input type="hidden" class="hidden" id="forum_id" value="<?php echo $this->thread[0]['forum_id']; ?>">
 </div>
