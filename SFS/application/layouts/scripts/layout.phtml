@@ -1,25 +1,11 @@
 <?php echo $this->doctype() ?>
 <html>
-<<<<<<< HEAD
   <head>
     <?php echo $this->headMeta(); ?>
   	<?php echo $this->headTitle() ?>
   	<?php echo $this->headLink() ?>
   </head>
-  <body
-    <!--  Site Content -->
-    <div class="container">
-      <p>
-        Hello World from mostafa zend project first time
-      </p>
-      <?php echo $this->layout()->content; ?>
-=======
-<head>
-  <?php echo $this->headMeta(); ?>
-  <?php echo $this->headTitle() ?>
-  <?php echo $this->headLink() ?>
-</head>
-<body>
+  <body>
 <div class="navbar navbar-primary bg-info">
   <div class="container-fluid">
         <div class="navbar-header">
@@ -33,7 +19,7 @@
           $userObj = $user->getIdentity();
           if ($userObj->is_admin) {
       ?>
-            <li><a href="<?php echo $this->baseUrl() ?>/users/admin">Admin Panel</a></li>
+            <li><a href="<?php echo $this->baseUrl() ?>/admin/index">Admin Panel</a></li>
       <?php } } ?>
     </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -82,11 +68,9 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" id="savePost" class="btn btn-primary">Save changes</button>
       </div>
->>>>>>> da852a0937a1d0f5107d7e3e468bcace48d8e2d9
     </div>
   </div>
 </div>
   <?php echo $this->headScript() ?>
 </body>
 </html>
-    
