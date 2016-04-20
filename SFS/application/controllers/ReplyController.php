@@ -33,7 +33,7 @@ class ReplyController extends Zend_Controller_Action
     {
         $rplyId = $this->getRequest()->getParam('id');
         if ($rplyId) {
-            $this->rply->deleteReply($rplyId);
+            $this->reply->deleteReply($rplyId);
         }
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);

@@ -3,6 +3,7 @@
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_edit_thread.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_add_reply.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_reply.js');
 	// echo $this->headTitle()->append($this->thread[0]['title']);
 ?>
 <hr>
@@ -42,7 +43,10 @@
 							if ($reply['replier_id'] == $userObj->u_id || $userObj->is_admin) :
 					?>
 					<div class="col-sm-1">
-						<a id="delete<?php echo $reply['id'] ?>" class="btn btn-danger delete">X</a>
+						<a id="delete-rply<?php echo $reply['id'] ?>" class="delete-rply btn glyphicon glyphicon-remove" style="font-size:1.5em;color:red;"></a>
+					</div>
+					<div class="col-sm-1">
+						<a id="edit-rply<?php echo $reply['id'] ?>" class="edit-rply btn glyphicon glyphicon-pencil" style="font-size:1.5em;"></a>
 					</div>
 					<?php
 						endif;
