@@ -32,11 +32,15 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="addCategory"/>
           <actionMethod actionName="addcategory"/>
+          <actionMethod actionName="listcategories"/>
+          <actionMethod actionName="deletecategories"/>
+          <actionMethod actionName="editcategories"/>
         </controllerFile>
         <controllerFile controllerName="Forum">
           <actionMethod actionName="index"/>
           <actionMethod actionName="list"/>
           <actionMethod actionName="posts"/>
+          <actionMethod actionName="addforum"/>
         </controllerFile>
         <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
@@ -152,6 +156,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Admin">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="listcategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="deletecategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="editcategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="addforum"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
