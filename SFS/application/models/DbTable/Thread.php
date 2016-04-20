@@ -43,7 +43,7 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
         $newPost = array(
             'title'             => $data['title'],
             'body'              => $data['body'],
-            'last_update_date'  => new Zend_Date() 
+            'last_update_date'  => new Zend_Db_Expr('NOW()') 
             );
         return $this->update($newPost,"thread_id=".$data['id']);
     }
