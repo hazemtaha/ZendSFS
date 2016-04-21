@@ -2,7 +2,9 @@
 
 class UserController extends Zend_Controller_Action
 {
-	private $user;
+
+    private $user = null;
+
     public function init()
     {
         $this->user = new Application_Model_DbTable_User();
@@ -60,16 +62,122 @@ class UserController extends Zend_Controller_Action
        			if ($form->getElement('picture')->receive()) {
          			$reqParams['picture'] = $form->getElement('picture')->getValue();
 	                if ($this->user->addUser($reqParams)) {
+                                $auth = Zend_Auth::getInstance();
+                                if($auth->is_admin){
+                                    $this->redirect('user/list');
+                                }
 	                    $this->redirect('user/login');
 	                }
        			}
             }
         }
+
         $this->view->form = $form;
     }
 
+    public function adminListUserAction()
+    {
+        $users = $this->user->listUser();
+        if (isset($users)) {
+            $paginator = Zend_Paginator::factory($users);
+            $paginator->setItemCountPerPage(5);
+            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+            $this->view->paginator = $paginator;
+            Zend_Paginator::setDefaultScrollingStyle('Sliding');
+            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+        }
+    }
+
+    public function adminEditUserAction()
+    {
+        $id = $this->getRequest()->getParam('id');
+        $data = $this->getRequest()->getParams();
+        $form = new Application_Form_Register();
+        if($this->getRequest()->isPost()){
+        $this->user->editUser($data,$id);
+        $this->redirect('/user/admin-list-user');    
+        }
+        $user = $this->user->getUserById($id);
+        $form->populate($user[0]);
+        $this->view->form = $form;
+        $this->render('signup');
+    }
+
+    public function adminDeleteUserAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            $id = $this->getRequest()->getParam('id');
+            if ($id) {
+                $this->user->deleteUser($id);
+            }
+        }
+        $this->_helper->layout->disableLayout();
+$this->_helper->viewRenderer->setNoRender(true);
+    }
+
+    public function adminBanUserAction()
+    {
+     if ($this->getRequest()->isPost()) {
+            $id = $this->getRequest()->getParam('id');
+            if ($id) {
+                $user = $this->user->getUserById($id);
+                $isActive = $user[0]['is_active'];
+                $this->user->banUser($id,$isActive);
+            }
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);   
+    }
+
+    public function makeAdminAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            $id = $this->getRequest()->getParam('id');
+            if ($id) {
+                $user = $this->user->getUserById($id);
+                $isAdmin = $user[0]['is_admin'];
+                $this->user->adminUser($id,$isAdmin);
+            }
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);      
+    }
+
+    public function adminSearchUserAction()
+    {
+        $username = $this->getRequest()->getParam('value');
+        if($username){
+        $users = $this->user->searchUser($username);
+        if (isset($users)) {
+            $paginator = Zend_Paginator::factory($users);
+            $paginator->setItemCountPerPage(5);
+            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+            $this->view->paginator = $paginator;
+            Zend_Paginator::setDefaultScrollingStyle('Sliding');
+            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+            $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        }
+    }
+            }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
