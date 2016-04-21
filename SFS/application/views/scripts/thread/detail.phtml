@@ -2,6 +2,7 @@
 	// javascript file to handle the edit functionality
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_edit_thread.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_edit_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_add_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_reply.js');
 	// echo $this->headTitle()->append($this->thread[0]['title']);
@@ -32,7 +33,7 @@
 						<div class="panel-heading">
 							<?php echo 'By :'.$reply['username'].' | On : '.$reply['creation_date']?>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" id="rplyCntnt<?php echo $reply['id']?>">
 							<?php echo $reply['body']; ?>
 						</div>
 					</div>
