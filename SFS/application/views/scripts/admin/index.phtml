@@ -1,12 +1,16 @@
+<!-- This is how we append javaScript file -->
+<?php
+$this->headScript()->appendFile($this->baseUrl().'/js/adminTab.js');
+?>
 <div class="container">
 			<h1><code>Welcome Admin !!</code></h1>
 
-			<ul class="nav nav-tabs">
-				  <li class="active"><a href="<?php echo $this->baseUrl(); ?>/admin/index">Users</a></li>
-				  <li><a href="<?php echo $this->baseUrl(); ?>/category/addcategory">Add Category</a></li>
-				  <li><a href="<?php echo $this->baseUrl(); ?>/posts/list">list posts</a></li>
-				  <li><a href="#">list comments</a></li>
-			</ul>
+			<ul class="nav nav-tabs" id="myTab">
+				  <li role="presentation" id="user"><a href="<?php echo $this->baseUrl(); ?>/admin/index">Users</a></li>
+				  <li role="presentation" id="addCat"><a href="<?php echo $this->baseUrl(); ?>/category/addcategory">Add Category</a></li>
+				  <li role="presentation" id="listCat"><a href="<?php echo $this->baseUrl(); ?>/category/listcategories">list Categories</a></li>
+				  <li role="presentation" id="tab4"><a href="<?php echo $this->baseUrl(); ?>/forum/addforum">Add Forum</a></li>
+					<li role="presentation" id="tab4"><a href="<?php echo $this->baseUrl(); ?>/forum/listforums">List Forums</a></li>
 
-			<h3><code>Users</code></h3>
+			</ul>
 </div>

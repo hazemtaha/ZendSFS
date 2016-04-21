@@ -32,11 +32,18 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="addCategory"/>
           <actionMethod actionName="addcategory"/>
+          <actionMethod actionName="listcategories"/>
+          <actionMethod actionName="deletecategories"/>
+          <actionMethod actionName="editcategories"/>
         </controllerFile>
         <controllerFile controllerName="Forum">
           <actionMethod actionName="index"/>
           <actionMethod actionName="list"/>
           <actionMethod actionName="posts"/>
+          <actionMethod actionName="addforum"/>
+          <actionMethod actionName="listforums"/>
+          <actionMethod actionName="deleteforum"/>
+          <actionMethod actionName="editforum"/>
         </controllerFile>
         <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
@@ -59,6 +66,7 @@
         <formFile formName="Register"/>
         <formFile formName="Thread"/>
         <formFile formName="Category"/>
+        <formFile formName="Forum"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -179,6 +187,26 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="adminSearchUser"/>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="listcategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="deletecategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="editcategories"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="addforum"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="listforums"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="deleteforum"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="editforum"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
