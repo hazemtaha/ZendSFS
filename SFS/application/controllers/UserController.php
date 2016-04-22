@@ -29,7 +29,7 @@ class UserController extends Zend_Controller_Action
                 if ($result->isValid()) {
                     $auth = Zend_Auth::getInstance();
                     $storage = $auth->getStorage();
-                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'gender', 'country', 'picture')));
+                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin','is_active', 'gender', 'country', 'picture')));
                     $this->redirect('/forum/list');
                 } else {
                     $error = 'Sorry ivalid username or password';
@@ -51,6 +51,7 @@ class UserController extends Zend_Controller_Action
     {
         $reqParams = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
+        $auth =Zend_Auth::getInstance();
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($reqParams)) {
             	// $upload = new Zend_File_Transfer_Adapter_Http();    
@@ -62,11 +63,34 @@ class UserController extends Zend_Controller_Action
        			if ($form->getElement('picture')->receive()) {
          			$reqParams['picture'] = $form->getElement('picture')->getValue();
 	                if ($this->user->addUser($reqParams)) {
-                                $auth = Zend_Auth::getInstance();
-                                if($auth->is_admin){
-                                    $this->redirect('user/list');
+
+                                
+                                if($auth->getIdentity()->is_admin){
+                                    $this->redirect('user/admin-list-user');
                                 }
-	                    $this->redirect('user/login');
+
+                                $mail = new Zend_Mail();
+                            //information of user login to send message in your  mail 
+                                
+
+                                
+
+                                $name=$reqParams['username'];
+                                
+                                $email=$reqParams['email'];
+
+                                $mail->setBodyText('hi'.$name."<br>".'Welcome in our Forums  your Email '.$email.'to verify your account please click this link  http://localhost/ZendSFS/SFS/public/user/verify/username/'.$name);
+
+                                $mail->setFrom('admin@forum.com', 'Forum');
+
+                                $mail->addTo($email,'Me');
+
+                                $mail->setSubject('verify your account');
+
+                                $mail->send();
+
+                            
+	                           $this->redirect('user/login');
 	                }
        			}
             }
@@ -162,6 +186,14 @@ $this->_helper->viewRenderer->setNoRender(true);
     }
             }
 
+
+    public function verify(){
+        $username = $this->getRequest()->getParam('username');
+        if($username){
+            $this->user->verify($username);
+            $this->redirect('user/login');
+        }
+    }
 
 }
 
