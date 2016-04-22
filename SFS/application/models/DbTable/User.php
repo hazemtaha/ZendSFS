@@ -19,8 +19,8 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
         return $this->fetchAll()->toArray();
     }
 
-    function editUser($data,$id){
-        $newData = array('username'=>$data['username'],'email'=>$data['email'],'password'=>$data['password'],'gender'=>$data['gender'],'country'=>$data['country'],'picture'=>$data['picture']);
+    function editUser($data,$id, $image){
+        $newData = array('username'=>$data['username'],'email'=>$data['email'],'password'=>md5($data['password']),'gender'=>$data['gender'],'country'=>$data['country'],'picture'=>$data[$image],'signature'=>$data['signature']);
         return $this->update($newData,"u_id=".$id);
     }
 
@@ -66,4 +66,3 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
         return $this->update($active,"username=".$username);
     }
 }
-

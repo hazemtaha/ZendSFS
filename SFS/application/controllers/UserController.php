@@ -2,7 +2,6 @@
 
 class UserController extends Zend_Controller_Action
 {
-
     private $user = null;
 
     public function init()
@@ -29,7 +28,7 @@ class UserController extends Zend_Controller_Action
                 if ($result->isValid()) {
                     $auth = Zend_Auth::getInstance();
                     $storage = $auth->getStorage();
-                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin','is_active', 'gender', 'country', 'picture')));
+                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
                     $this->redirect('/forum/list');
                 } else {
                     $error = 'Sorry ivalid username or password';
@@ -51,46 +50,37 @@ class UserController extends Zend_Controller_Action
     {
         $reqParams = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
-        $auth =Zend_Auth::getInstance();
+        $auth = Zend_Auth::getInstance();
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($reqParams)) {
-            	// $upload = new Zend_File_Transfer_Adapter_Http();    
-       			// $upload->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
-       			$form->getElement('picture')->addFilter('Rename', array(
-       				'target' => $form->getValue('username')."_".$form->getValue('picture'),
-       				'overwrite' => true
-       				));
-       			if ($form->getElement('picture')->receive()) {
-         			$reqParams['picture'] = $form->getElement('picture')->getValue();
-	                if ($this->user->addUser($reqParams)) {
 
-                                $mail = new Zend_Mail();
-                            //information of user login to send message in your  mail 
-                                
+                // $upload = new Zend_File_Transfer_Adapter_Http();
+                   // $upload->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
+                   $form->getElement('picture')->addFilter('Rename', array(
+                       'target' => $form->getValue('username').'_'.$form->getValue('picture'),
+                       'overwrite' => true,
+                       ));
+                if ($form->getElement('picture')->receive()) {
+                    $reqParams['picture'] = $form->getElement('picture')->getValue();
+                    if ($this->user->addUser($reqParams)) {
+                        if ($auth->getIdentity()->is_admin) {
+                            $this->redirect('user/admin-list-user');
+                        }
+                        $mail = new Zend_Mail();
+              //information of user login to send message in your  mail
+              $name = $reqParams['username'];
+                        $email = $reqParams['email'];
+                        $mail->setBodyText('hi'.$name.'<br>'.'Welcome in our Forums  your Email '.$email.'to verify your account please click this link  http://localhost/ZendSFS/SFS/public/user/verify/username/'.$name);
+                        $mail->setFrom('admin@forum.com', 'Forum');
+                        $mail->addTo($email, 'Me');
+                        $mail->setSubject('verify your account');
+                        $mail->send();
+                        $this->redirect('user/login');
+                    }
+                }
 
-                                
-
-                                $name=$reqParams['username'];
-                                
-                                $email=$reqParams['email'];
-
-                                $mail->setBodyText('hi'.$name."<br>".'Welcome in our Forums  your Email '.$email.'to verify your account please click this link  http://localhost/ZendSFS/SFS/public/user/verify/username/'.$name);
-
-                                $mail->setFrom('admin@forum.com', 'Forum');
-
-                                $mail->addTo($email,'Me');
-
-                                $mail->setSubject('verify your account');
-
-                                $mail->send();
-
-                            
-	                           $this->redirect('user/login');
-	                }
-       			}
             }
         }
-
         $this->view->form = $form;
     }
 
@@ -112,12 +102,19 @@ class UserController extends Zend_Controller_Action
         $id = $this->getRequest()->getParam('id');
         $data = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
-        if($this->getRequest()->isPost()){
-        $this->user->editUser($data,$id);
-        $this->redirect('/user/admin-list-user');    
+        if ($this->getRequest()->isPost()) {
+            $this->user->editUser($data, $id);
+            $this->redirect('/user/admin-list-user');
         }
         $user = $this->user->getUserById($id);
         $form->populate($user[0]);
+        // add signature
+        $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
+        $signature->setAttrib("class", "form-control");
+        $signature->setAttrib("placeholder", "Enter Forum name ...");
+        $signature->setName("signature");
+        $signature->setLabel('Signature: ');
+        $form->addElements(array($signature));
         $this->view->form = $form;
         $this->render('signup');
     }
@@ -131,21 +128,21 @@ class UserController extends Zend_Controller_Action
             }
         }
         $this->_helper->layout->disableLayout();
-$this->_helper->viewRenderer->setNoRender(true);
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function adminBanUserAction()
     {
-     if ($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $id = $this->getRequest()->getParam('id');
             if ($id) {
                 $user = $this->user->getUserById($id);
                 $isActive = $user[0]['is_active'];
-                $this->user->banUser($id,$isActive);
+                $this->user->banUser($id, $isActive);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);   
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function makeAdminAction()
@@ -155,60 +152,68 @@ $this->_helper->viewRenderer->setNoRender(true);
             if ($id) {
                 $user = $this->user->getUserById($id);
                 $isAdmin = $user[0]['is_admin'];
-                $this->user->adminUser($id,$isAdmin);
+                $this->user->adminUser($id, $isAdmin);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);      
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function adminSearchUserAction()
     {
         $username = $this->getRequest()->getParam('value');
-        if($username){
-        $users = $this->user->searchUser($username);
-        if (isset($users)) {
-            $paginator = Zend_Paginator::factory($users);
-            $paginator->setItemCountPerPage(5);
-            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-            $this->view->paginator = $paginator;
-            Zend_Paginator::setDefaultScrollingStyle('Sliding');
-            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
-            $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-
+        if ($username) {
+            $users = $this->user->searchUser($username);
+            if (isset($users)) {
+                $paginator = Zend_Paginator::factory($users);
+                $paginator->setItemCountPerPage(5);
+                $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+                $this->view->paginator = $paginator;
+                Zend_Paginator::setDefaultScrollingStyle('Sliding');
+                Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+                $this->_helper->layout->disableLayout();
+                $this->_helper->viewRenderer->setNoRender(true);
+            }
         }
     }
+
+    public function updateuserAction()
+    {
+        $id = $this->getRequest()->getParam('id');
+        #var_dump($id);
+        $data = $this->getRequest()->getParams();
+        $form = new Application_Form_Register();
+
+        if ($this->getRequest()->isPost()) {
+        //Despite all of these we have a null picture in our array
+        //Begin dealing with the picture
+        $form->getElement('picture')->addFilter('Rename',
+        array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
+        'overwrite' => true, ));
+
+        if ($form->getElement('picture')->receive()) {
+            $reqParams['picture'] = $form->getElement('picture')->getValue();
+            $this->user->editUser($data, $id, $reqParams['picture']);
             }
+              echo 'you profile has been updated';
+              $this->redirect('/forum/list');
+        }
 
+        $user = $this->user->getUserById($id);
+        $image = $user[0]['picture'];
+        #var_dump($user);
+        #var_dump($image);
+        $form->populate($user[0]);
+        $this->view->form = $form;
+        $this->render('signup');
+    }
 
-    public function verify(){
+    public function verify()
+    {
         $username = $this->getRequest()->getParam('username');
-        if($username){
+        if ($username) {
             $this->user->verify($username);
             $this->redirect('user/login');
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

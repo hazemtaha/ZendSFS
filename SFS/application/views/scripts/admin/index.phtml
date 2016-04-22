@@ -1,10 +1,13 @@
 <!-- This is how we append javaScript file -->
 <?php
 $this->headScript()->appendFile($this->baseUrl().'/js/adminTab.js');
+$user = Zend_Auth::getInstance();
+if($user->hasIdentity()):
+$userObj = $user->getIdentity();
 ?>
 <div class="container">
-			<h1><code>Welcome Admin !!</code></h1>
-
+			<h1><code>Welcome <?php echo $userObj->username ?> !!</code></h1>
+<?php endif;  ?>
 			<ul class="nav nav-tabs" id="myTab">
 				  <li role="presentation" id="user"><a href="<?php echo $this->baseUrl(); ?>/user/admin-list-user">Users</a></li>
 				  <li role="presentation" id="addCat"><a href="<?php echo $this->baseUrl(); ?>/category/addcategory">Add Category</a></li>

@@ -25,6 +25,13 @@
                             ?>
 				<a href="#editModal" data-toggle="modal" id="<?php echo $thread['id'] ?>" class="btn btn-warning edit">Edit</a>
 				<a class="btn btn-danger delete-thread">Delete</a>
+        <?php
+          $user = Zend_Auth::getInstance();
+          if ($user->hasIdentity()):
+              $userObj = $user->getIdentity();
+              if ($userObj->is_admin): ?>
+                <a class="btn btn-default delete-thread">Pin</a>
+        <?php endif; endif; ?>
 				<?php
 												endif;
 										endif;

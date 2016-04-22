@@ -2,6 +2,8 @@
 <?php
     // javascript file to handle the edit functionality
     $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
+    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_pin_thread.js');
+    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_lock_thread.js');
     // if (count($this->threads) == 0)
     $user = Zend_Auth::getInstance();
     if ($user->hasIdentity()):
@@ -18,11 +20,70 @@
     <?php
         else :
     ?>
+    <h4 class="badge">Pinned Threads</h4>
+    <!--  displaying pinned threads -->
+    <?php foreach ($this->paginator as $thread): ?>
+      <?php if ($thread['is_sticky']): ?>
+        <div id="post<?php echo $thread['thread_id']?>" class="panel panel-primary">
+    			<div class="panel-heading">
+            <?php if ($thread['is_locked']): ?>
+              <span class="glyphicon glyphicon-lock pull-right" style="padding:5px;"></span>
+            <?php endif; ?>
+            <span class="glyphicon glyphicon-pushpin pull-right" style="padding:5px;"></span>
+
+    				<h3 class="panel-title" id="title<?php echo $thread['thread_id'] ?>"><a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id']; ?>"><?php echo $thread['title']; ?></a></h3><small>Created By : <?php echo $thread['username']?> | On: <?php echo $thread['creation_date']?> | Replies : <?php echo $thread['replies_no'] ?></small>
+          </div>
+    			<div class="panel-footer">
+    				<?php
+                        $user = Zend_Auth::getInstance();
+                        if ($user->hasIdentity()):
+                            $userObj = $user->getIdentity();
+                            if ($thread['creator'] == $userObj->u_id || $userObj->is_admin):
+                                ?>
+    				<!-- <a href="#editModal" data-toggle="modal" id="<?php echo $thread['thread_id'] ?>" class="btn btn-warning edit">Edit</a> -->
+    				<a id="delete<?php echo $thread['thread_id']; ?>" class="btn btn-danger delete-thread">Delete</a>
+    				<?php
+    						endif;
+    					endif;
+    				?>
+    				<a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id'] ?>" class="btn btn-info">Detail</a>
+            <?php
+              $user = Zend_Auth::getInstance();
+              if ($user->hasIdentity()):
+                  $userObj = $user->getIdentity();
+                  if ($userObj->is_admin): ?>
+                    <a class="btn btn-primary pin-thread" id="pin<?php echo $thread['thread_id']; ?>">
+                    <?php if ($thread['is_sticky']): ?>
+                      UnPin
+                    <?php else: ?>
+                      Pin
+                    <?php endif; ?>
+                    </a>
+                    <a class="btn btn-warning lock-thread" id="lock<?php echo $thread['thread_id']; ?>">
+                    <?php if ($thread['is_locked']): ?>
+                      Unlock
+                    <?php else: ?>
+                      Lock
+                    <?php endif; ?>
+                    </a>
+            <?php endif; endif; ?>
+    			</div>
+    		</div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+    <hr>
+    <h4 class="badge">Normal Threads</h4>
+    <!--  displaying normal threads -->
     <?php	foreach ($this->paginator as $thread) : ?>
+      <?php if (!$thread['is_sticky']): ?>
 		<div id="post<?php echo $thread['thread_id']?>" class="panel panel-primary">
 			<div class="panel-heading">
+        <?php if ($thread['is_locked']): ?>
+          <span class="glyphicon glyphicon-lock pull-right" style="padding:5px;"></span>
+        <?php endif; ?>
+
 				<h3 class="panel-title" id="title<?php echo $thread['thread_id'] ?>"><a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id']; ?>"><?php echo $thread['title']; ?></a></h3><small>Created By : <?php echo $thread['username']?> | On: <?php echo $thread['creation_date']?> | Replies : <?php echo $thread['replies_no'] ?></small>
-			</div>
+      </div>
 			<div class="panel-footer">
 				<?php
                     $user = Zend_Auth::getInstance();
@@ -37,9 +98,30 @@
 					endif;
 				?>
 				<a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id'] ?>" class="btn btn-info">Detail</a>
+        <?php
+          $user = Zend_Auth::getInstance();
+          if ($user->hasIdentity()):
+              $userObj = $user->getIdentity();
+              if ($userObj->is_admin): ?>
+                <a class="btn btn-primary pin-thread" id="pin<?php echo $thread['thread_id']; ?>">
+                <?php if ($thread['is_sticky']): ?>
+                  UnPin
+                <?php else: ?>
+                  Pin
+                <?php endif; ?>
+                </a>
+                <a class="btn btn-warning lock-thread" id="lock<?php echo $thread['thread_id']; ?>">
+                <?php if ($thread['is_locked']): ?>
+                  Unlock
+                <?php else: ?>
+                  Lock
+                <?php endif; ?>
+                </a>
+        <?php endif; endif; ?>
 			</div>
 		</div>
     <?php
+              endif;
             endforeach;
         endif;
         echo $this->paginator;

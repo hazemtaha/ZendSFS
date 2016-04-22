@@ -5,16 +5,72 @@
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_add_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_edit_reply.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_pin_thread.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_lock_thread.js');
 	// echo $this->headTitle()->append($this->thread[0]['title']);
 ?>
 <hr>
-<div class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title"><strong id="title<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['title'] ?></strong></h3><small>threaded By : <?php echo $this->thread[0]['username']?> | On: <?php echo $this->thread[0]['creation_date']?></small>
+<div class="panel panel-primary">
+	<div class="panel-heading" style="height:70px;">
+		<div class="col-sm-1">
+			<img src="<?php echo $this->baseUrl(); ?>/user-uploads/<?php echo $this->thread[0]['picture']; ?>" width='75' class='img-thumbnail img-circle' title ="<?php echo $this->thread[0]['username'] ?>" />
+		</div>
+		<h3 class="panel-title">
+			<div class="col-sm-11">
+				<strong id="title<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['title'] ?></strong><br><br><p>Posted By : <?php echo strtoupper($this->thread[0]['username']); ?> | On: <?php echo $this->thread[0]['creation_date'];
+					if ($lastUpdate = $this->thread[0]['last_update_date']): ?>
+					| Last Update : <?php echo $lastUpdate; ?>
+				<?php endif; ?> </p></h3>
+
+			</div>
 	</div>
 	<div class="panel-body">
 		<p id="body<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['body'] ?></p>
+		<hr class="bg-primary" style="height:2px;width:95%;">
+		<h3 class="text-center text-primary">Signature</h3>
+		<div class="badge col-sm-12">
+			<div class="col-sm-12" style="height:25px;"></div><br>
+			<div class="col-sm-12">
+				<?php echo $this->thread[0]['signature']; ?>
+			</div>
+			<div class="col-sm-12" style="height:25px;"></div><br>
+		</div>
 	</div>
+	<?php
+		$user = Zend_Auth::getInstance();
+		if ($user->hasIdentity()) :
+			$userObj = $user->getIdentity();
+			if ($this->thread[0]['creator'] == $userObj->u_id || $userObj->is_admin) :
+	?>
+	<div class="panel-footer">
+		<a href="#editModal" data-toggle="modal" id="<?php echo $this->thread[0]['thread_id'] ?>" class="btn btn-warning edit" >Edit</a>
+		<a id="delete<?php echo $this->thread[0]['thread_id']; ?>" name='detail-delete' class="btn btn-danger delete-thread">Delete</a>
+		<?php
+			$user = Zend_Auth::getInstance();
+			if ($user->hasIdentity()):
+					$userObj = $user->getIdentity();
+					if ($userObj->is_admin): ?>
+						<a class="btn btn-primary pin-thread" id="pin<?php echo $this->thread[0]['thread_id']; ?>">
+						<?php if ($this->thread[0]['is_sticky']): ?>
+							UnPin
+						<?php else: ?>
+							Pin
+						<?php endif; ?>
+						</a>
+						<a class="btn btn-warning lock-thread" id="lock<?php echo $this->thread[0]['thread_id']; ?>">
+						<?php if ($this->thread[0]['is_locked']): ?>
+							Unlock
+						<?php else: ?>
+							Lock
+						<?php endif; ?>
+						</a>
+		<?php endif; endif; ?>
+	</div>
+	<?php
+		endif;
+			endif;
+	 ?>
+	 <br>
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">Replies (<u id="rplsCount"><?php echo count($this->replies) ?></u>)</h3>
@@ -57,7 +113,7 @@
 			<?php endforeach; endif; ?>
 			<?php
 				$user = Zend_Auth::getInstance();
-				if ($user->hasIdentity()) :
+				if ($userObj = $user->hasIdentity() && !$this->thread[0]['is_locked'] || $userObj->is_admin) :
 			?>
 		</div>
 			<div class="form-group">
@@ -74,19 +130,5 @@
 		</div>
 		<?php endif; ?>
 	</div>
-	<?php
-		$user = Zend_Auth::getInstance();
-		if ($user->hasIdentity()) :
-			$userObj = $user->getIdentity();
-			if ($this->thread[0]['creator'] == $userObj->u_id) :
-	?>
-	<div class="panel-footer">
-		<a href="#editModal" data-toggle="modal" id="<?php echo $this->thread[0]['thread_id'] ?>" class="btn btn-warning edit" >Edit</a>
-		<a id="delete<?php echo $this->thread[0]['thread_id']; ?>" name='detail-delete' class="btn btn-danger delete-thread">Delete</a>
-	</div>
-	<?php
-		endif;
-			endif;
-	 ?>
 	 <input type="hidden" class="hidden" id="forum_id" value="<?php echo $this->thread[0]['forum_id']; ?>">
 </div>

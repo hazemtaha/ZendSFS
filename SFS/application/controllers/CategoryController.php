@@ -33,7 +33,16 @@ class CategoryController extends Zend_Controller_Action
     public function listcategoriesAction()
     {
         // action body
-        $this->view->listcat = $this->model->getCategories();
+        $category = $this->model->getCategories();
+        if (isset($category)) {
+            $paginator = Zend_Paginator::factory($category);
+            $paginator->setItemCountPerPage(5);
+            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+            $this->view->paginator = $paginator;
+            Zend_Paginator::setDefaultScrollingStyle('Sliding');
+            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+        }
+
     }
 
     public function deletecategoriesAction()
@@ -59,8 +68,8 @@ class CategoryController extends Zend_Controller_Action
             $editform = new Application_Form_Category();
             //populate her to push the array into the form
             $editform->populate($categoryData[0]);
-            $this->view->form = $editform;
             $this->view->newId = $id;
+            $this->view->form = $editform;
           }
         }else{
           $data = $this->getRequest()->getParams();

@@ -23,7 +23,7 @@ class Application_Form_Forum extends Zend_Form
 
         foreach ($categories->fetchAll() as $cat) {
           # code...
-          $cat_id->addMultiOption($cat['cat_id'],$cat['name']);
+          $cat_id->addMultiOption($cat['cat_id'],$cat['cat_name']);
         }
 
         $cat_id->setAttrib('class','form-control');

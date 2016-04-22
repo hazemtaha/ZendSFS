@@ -160,9 +160,6 @@
             <viewScriptFile forActionName="signup"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Category">
-            <viewScriptFile forActionName="addCategory"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="addcategory"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Admin">
@@ -188,6 +185,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="adminSearchUser"/>
+            <viewControllerScriptsDirectory forControllerName="User">
+              <viewScriptFile forActionName="updateuser"/>
+          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="listcategories"/>
           </viewControllerScriptsDirectory>
