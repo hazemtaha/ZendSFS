@@ -2,6 +2,7 @@
 <?php
     // javascript file to handle the edit functionality
     $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
+    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_pin_thread.js');
     // if (count($this->threads) == 0)
     $user = Zend_Auth::getInstance();
     if ($user->hasIdentity()):
@@ -37,6 +38,26 @@
 					endif;
 				?>
 				<a href="<?php echo $this->baseUrl() ?>/thread/detail/id/<?php echo $thread['thread_id'] ?>" class="btn btn-info">Detail</a>
+        <?php
+          $user = Zend_Auth::getInstance();
+          if ($user->hasIdentity()):
+              $userObj = $user->getIdentity();
+              if ($userObj->is_admin): ?>
+                <a class="btn btn-primary pin-thread" id="pin<?php echo $thread['thread_id']; ?>">
+                <?php if ($thread['is_sticky']): ?>
+                  UnPin
+                <?php else: ?>
+                  Pin
+                <?php endif; ?>
+                </a>
+                <a class="btn btn-warning lock-thread" id="lock<?php echo $thread['thread_id']; ?>">
+                <?php if ($thread['is_locked']): ?>
+                  UnLock
+                <?php else: ?>
+                  Lock
+                <?php endif; ?>
+                </a>
+        <?php endif; endif; ?>
 			</div>
 		</div>
     <?php

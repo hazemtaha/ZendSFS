@@ -40,11 +40,23 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
         return $this->delete("thread_id=$threadId");
     }
     function editThread($data) {
-        $newPost = array(
+        $newThread = array(
             'title'             => $data['title'],
             'body'              => $data['body'],
             'last_update_date'  => new Zend_Db_Expr('NOW()')
             );
-        return $this->update($newPost,"thread_id=".$data['id']);
+        return $this->update($newThread,"thread_id=".$data['id']);
+    }
+    function toggleThreadPin($data) {
+        $thread = array(
+            'is_sticky' => $data['status']
+            );
+        return $this->update($thread,"thread_id=".$data['id']);  
+    }
+    function toggleThreadLock($data) {
+        $thread = array(
+            'is_locked' => $data['status']
+            );
+        return $this->update($thread,"thread_id=".$data['id']);  
     }
 }

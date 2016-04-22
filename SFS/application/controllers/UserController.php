@@ -54,7 +54,7 @@ class UserController extends Zend_Controller_Action
         $auth =Zend_Auth::getInstance();
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($reqParams)) {
-            	// $upload = new Zend_File_Transfer_Adapter_Http();    
+            	// $upload = new Zend_File_Transfer_Adapter_Http();
        			// $upload->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
        			$form->getElement('picture')->addFilter('Rename', array(
        				'target' => $form->getValue('username')."_".$form->getValue('picture'),
@@ -64,19 +64,16 @@ class UserController extends Zend_Controller_Action
          			$reqParams['picture'] = $form->getElement('picture')->getValue();
 	                if ($this->user->addUser($reqParams)) {
 
-                                
+
                                 if($auth->getIdentity()->is_admin){
                                     $this->redirect('user/admin-list-user');
                                 }
 
                                 $mail = new Zend_Mail();
-                            //information of user login to send message in your  mail 
-                                
-
-                                
+                            //information of user login to send message in your  mail
 
                                 $name=$reqParams['username'];
-                                
+
                                 $email=$reqParams['email'];
 
                                 $mail->setBodyText('hi'.$name."<br>".'Welcome in our Forums  your Email '.$email.'to verify your account please click this link  http://localhost/ZendSFS/SFS/public/user/verify/username/'.$name);
@@ -89,7 +86,7 @@ class UserController extends Zend_Controller_Action
 
                                 $mail->send();
 
-                            
+
 	                           $this->redirect('user/login');
 	                }
        			}
@@ -119,7 +116,7 @@ class UserController extends Zend_Controller_Action
         $form = new Application_Form_Register();
         if($this->getRequest()->isPost()){
         $this->user->editUser($data,$id);
-        $this->redirect('/user/admin-list-user');    
+        $this->redirect('/user/admin-list-user');
         }
         $user = $this->user->getUserById($id);
         $form->populate($user[0]);
@@ -150,7 +147,7 @@ $this->_helper->viewRenderer->setNoRender(true);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);   
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function makeAdminAction()
@@ -164,7 +161,7 @@ $this->_helper->viewRenderer->setNoRender(true);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);      
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function adminSearchUserAction()
@@ -196,24 +193,3 @@ $this->_helper->viewRenderer->setNoRender(true);
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
