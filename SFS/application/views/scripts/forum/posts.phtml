@@ -3,6 +3,7 @@
     // javascript file to handle the edit functionality
     $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_thread.js');
     $this->headScript()->appendFile($this->baseUrl().'/js/ajax_pin_thread.js');
+    $this->headScript()->appendFile($this->baseUrl().'/js/ajax_lock_thread.js');
     // if (count($this->threads) == 0)
     $user = Zend_Auth::getInstance();
     if ($user->hasIdentity()):
@@ -52,7 +53,7 @@
                 </a>
                 <a class="btn btn-warning lock-thread" id="lock<?php echo $thread['thread_id']; ?>">
                 <?php if ($thread['is_locked']): ?>
-                  UnLock
+                  Unlock
                 <?php else: ?>
                   Lock
                 <?php endif; ?>
