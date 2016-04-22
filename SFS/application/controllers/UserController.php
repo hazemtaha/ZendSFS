@@ -187,6 +187,7 @@ $this->_helper->viewRenderer->setNoRender(true);
             }
 
     public function updateuserAction(){
+
       $id = $this->getRequest()->getParam('id');
       #var_dump($id);
       $data = $this->getRequest()->getParams();
@@ -196,6 +197,12 @@ $this->_helper->viewRenderer->setNoRender(true);
       echo "you profile has been updated";
       $this->redirect('/forum/list');
       }
+      $user = $this->user->getUserById($id);
+      $form->populate($user[0]);
+      $this->view->form = $form;
+      $this->render('signup');
+
+    }
 
     public function verify(){
         $username = $this->getRequest()->getParam('username');
@@ -204,33 +211,5 @@ $this->_helper->viewRenderer->setNoRender(true);
             $this->redirect('user/login');
         }
     }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 40580bc25674719b9c64736f0c7b13e7aea9251a
-
-      $user = $this->user->getUserById($id);
-      $form->populate($user[0]);
-      $this->view->form = $form;
-      $this->render('signup');
-
-    }
-
 
 }
