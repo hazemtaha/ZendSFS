@@ -7,7 +7,7 @@ class Application_Model_DbTable_Category extends Zend_Db_Table_Abstract {
 	function addCategory($data) {
 
 		$row = $this->createRow();
-		$row->name = $data['cat_name'];
+		$row->cat_name = $data['cat_name'];
 		return $row->save();
 	}
 

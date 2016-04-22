@@ -65,12 +65,23 @@ class ThreadController extends Zend_Controller_Action
 
     public function lockAction()
     {
-        // action body
+        $reqParams = $this->getRequest()->getParams();
+        if ($this->getRequest()->isPost()) {
+            $this->thread->toggleThreadLock($reqParams);
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+  
     }
 
     public function pinAction()
     {
-        // action body
+        $reqParams = $this->getRequest()->getParams();
+        if ($this->getRequest()->isPost()) {
+            $this->thread->toggleThreadPin($reqParams);
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function detailAction()

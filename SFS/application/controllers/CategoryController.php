@@ -33,7 +33,6 @@ class CategoryController extends Zend_Controller_Action
     public function listcategoriesAction()
     {
         // action body
-        #$this->view->listcat = $this->model->getCategories();
         $category = $this->model->getCategories();
         if (isset($category)) {
             $paginator = Zend_Paginator::factory($category);
