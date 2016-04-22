@@ -5,7 +5,9 @@ class ForumController extends Zend_Controller_Action
 
     private $forum = null;
 
-    private $category = null,$thread;
+    private $category = null;
+
+    private $thread = null;
 
     public function init()
     {
@@ -39,6 +41,11 @@ class ForumController extends Zend_Controller_Action
         Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
       }
         // $this->view->threads = $this->thread->getThreadsByForum($fId);
+    }
+
+    public function addforumAction()
+    {
+        // action body
     }
 
 
