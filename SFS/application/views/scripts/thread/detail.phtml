@@ -5,6 +5,8 @@
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_add_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_reply.js');
 	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_edit_reply.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_pin_thread.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/ajax_lock_thread.js');
 	// echo $this->headTitle()->append($this->thread[0]['title']);
 ?>
 <hr>
@@ -43,6 +45,26 @@
 	<div class="panel-footer">
 		<a href="#editModal" data-toggle="modal" id="<?php echo $this->thread[0]['thread_id'] ?>" class="btn btn-warning edit" >Edit</a>
 		<a id="delete<?php echo $this->thread[0]['thread_id']; ?>" name='detail-delete' class="btn btn-danger delete-thread">Delete</a>
+		<?php
+			$user = Zend_Auth::getInstance();
+			if ($user->hasIdentity()):
+					$userObj = $user->getIdentity();
+					if ($userObj->is_admin): ?>
+						<a class="btn btn-primary pin-thread" id="pin<?php echo $this->thread[0]['thread_id']; ?>">
+						<?php if ($this->thread[0]['is_sticky']): ?>
+							UnPin
+						<?php else: ?>
+							Pin
+						<?php endif; ?>
+						</a>
+						<a class="btn btn-warning lock-thread" id="lock<?php echo $this->thread[0]['thread_id']; ?>">
+						<?php if ($this->thread[0]['is_locked']): ?>
+							Unlock
+						<?php else: ?>
+							Lock
+						<?php endif; ?>
+						</a>
+		<?php endif; endif; ?>
 	</div>
 	<?php
 		endif;
