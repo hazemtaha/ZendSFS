@@ -45,11 +45,11 @@ class Application_Form_Register extends Zend_Form {
 			));
 		$country->setAttrib('class', 'form-control');
 
-        $image = new Zend_Form_Element_File('picture');
-        $image->setLabel('Upload an image:');
-      	$image->setDestination(APPLICATION_PATH.'/../public/user-uploads/');
-      	$image->setRequired(true);
-      	$image->setMaxFileSize(2097152); // limits the filesize on the client side
+      $image = new Zend_Form_Element_File('picture');
+      $image->setLabel('Upload an image:');
+    	$image->setDestination(APPLICATION_PATH.'/../public/user-uploads/');
+      $image->setRequired(true);
+  		$image->setMaxFileSize(2097152); // limits the filesize on the client side
       	// $image->setDescription('Click Browse and click on the image file you would like to upload');
         $image->addValidator('Count', false, 1);                // ensure only 1 file
 		$image->addValidator('Size', false, 2097152);            // limit to 10 meg
