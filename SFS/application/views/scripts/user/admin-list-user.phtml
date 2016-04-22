@@ -1,3 +1,5 @@
+<?php echo $this->partial("admin/index.phtml"); ?>
+<br><br>
 <a href="<?php echo $this->baseUrl(); ?>/user/signup" class="btn btn-primary" type="button">Add New User</a> <br><br>
 <?php 
 $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_user.js');

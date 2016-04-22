@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 22, 2016 at 12:59 PM
+-- Generation Time: Apr 22, 2016 at 05:48 AM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `thread` (
   PRIMARY KEY (`thread_id`),
   KEY `forum_id` (`forum_id`,`creator`),
   KEY `creator` (`creator`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `thread`
@@ -150,7 +150,8 @@ CREATE TABLE IF NOT EXISTS `thread` (
 INSERT INTO `thread` (`thread_id`, `title`, `body`, `creation_date`, `last_update_date`, `forum_id`, `creator`, `is_locked`, `is_sticky`) VALUES
 (9, 'Hello THis is the post of year', 'hell yeah ', '2016-04-19 06:21:05', NULL, 1, 1, 0, 0),
 (10, 'Hello Again', 'Hello world post for testing purposes :)', '2016-04-19 06:41:50', NULL, 2, 1, 0, 0),
-(11, 'Hello Zend', 'Hello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello Zendvv', '2016-04-19 18:13:25', '2016-04-20 06:08:54', 1, 7, 0, 0);
+(11, 'Hello Zend', 'Hello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello ZendHello Zendvv', '2016-04-19 18:13:25', '2016-04-20 06:08:54', 1, 7, 0, 0),
+(12, 'hi', 'hello hello', '2016-04-22 02:10:53', NULL, 5, 9, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -168,9 +169,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `signature` text,
   `picture` varchar(255) DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `users`
@@ -179,7 +180,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`u_id`, `username`, `email`, `password`, `gender`, `country`, `signature`, `picture`, `is_admin`, `is_active`) VALUES
 (1, 'admin', 'admin@mail.com', '4297f44b13955235245b2497399d7a93', 0, 'Egypt', 'Ahahahahahahah Hello :D', '/pic', 1, 1),
 (7, 'root', 'root@mail.com', '4297f44b13955235245b2497399d7a93', 0, 'Egypt', NULL, 'root_Warm_grasses_by_dcsearle.t21.jpg', 0, 1),
-(8, 'hazem', 'hazem@mail.com', '4297f44b13955235245b2497399d7a93', 0, 'Egypt', NULL, 'hazem_salcantayperu_by_Life_Nomadic.jpg', 0, 1);
+(8, 'hazem', 'hazem@mail.com', '4297f44b13955235245b2497399d7a93', 0, 'Egypt', NULL, 'hazem_salcantayperu_by_Life_Nomadic.jpg', 0, 1),
+(9, 'hussien', 'hussien@mail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 'Egypt', NULL, 'hussien_11875953_678664875567873_287322319_o.jpg', 1, 1),
+(10, 'gollasha', 'gollasha@mail.com', 'e10adc3949ba59abbe56e057f20f883e', 0, 'Egypt', NULL, 'gollasha_11875953_678664875567873_287322319_o.jpg', 0, 1);
 
 --
 -- Constraints for dumped tables
