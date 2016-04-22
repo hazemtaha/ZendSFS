@@ -12,7 +12,13 @@
           <a class="navbar-brand" href="<?php echo $this->baseUrl()?>/forum/list">SFS</a>
         </div>
     <ul class="nav navbar-nav">
+            <?php
+            Zend_Loader::loadFile("SystemStatus.php", APPLICATION_PATH."/../library/utils/", true);
+            $system = new SystemStatus();
+            $user = Zend_Auth::getInstance();
+            if ($system->checkSystemAvailablitiy() || isset($user->getIdentity()->is_admin)): ?>
             <li><a href="<?php echo $this->baseUrl() ?>/forum/list">Home</a></li>
+          <?php endif; ?>
             <?php
               $user = Zend_Auth::getInstance();
         if($user->hasIdentity()) {
@@ -32,7 +38,12 @@
             <li><a href="<?php echo $this->baseUrl()?>/user/updateuser/id/<?php echo $userObj->u_id ?>"><span class="glyphicon glyphicon-user"></span>Profile Setting</a></li>
             <li><a href="<?php echo $this->baseUrl()?>/user/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
             <?php else : ?>
+              <?php
+              Zend_Loader::loadFile("SystemStatus.php", APPLICATION_PATH."/../library/utils/", true);
+              $system = new SystemStatus();
+              if ($system->checkSystemAvailablitiy()): ?>
               <li><a href="<?php echo $this->baseUrl()?>/user/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <?php endif; ?>
               <li><a href="<?php echo $this->baseUrl()?>/user/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             <?php endif;  ?>
         </ul>

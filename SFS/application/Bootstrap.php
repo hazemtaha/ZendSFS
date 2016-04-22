@@ -30,4 +30,27 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $navigation = new Zend_Navigation($config);
       $view->navigation($navigation);
   }
+  protected function _initSystemStatus() {
+      Zend_Loader::loadFile("SystemStatus.php", APPLICATION_PATH."/../library/utils/", true);
+      $system = new SystemStatus();
+      $router = new Zend_Controller_Router_Rewrite();
+      $request = new Zend_Controller_Request_Http();
+      $router->route($request);        
+      $frontController = Zend_Controller_Front::getInstance();
+      $isAdmin = false;
+      if (!$system->checkSystemAvailablitiy()) {
+        $user = Zend_Auth::getInstance();
+        if ($user->hasIdentity()) {
+          $userObj = $user->getIdentity();
+          if ($userObj->is_admin) {
+            $isAdmin = true;
+          }
+        }
+        if ($request->getActionName() != 'login' && !$isAdmin) {
+          $response = new Zend_Controller_Response_Http();
+          $response->setRedirect($frontController->getBaseUrl()."/ZendSFS/SFS/public/user/login");
+          $frontController->setResponse($response);
+        }
+      }
+  }
 }

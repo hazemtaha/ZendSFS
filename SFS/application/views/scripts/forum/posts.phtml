@@ -8,7 +8,8 @@
     $user = Zend_Auth::getInstance();
     if ($user->hasIdentity()):
 ?>
-    <div class="">
+  
+    <div>
       <a href="<?php echo $this->baseUrl() ?>/thread/add/forum/<?php echo $this->forumId ?>" class="btn btn-default">Add Thread</a>
     </div>
     <?php endif; ?>

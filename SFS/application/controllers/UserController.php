@@ -2,18 +2,19 @@
 
 class UserController extends Zend_Controller_Action
 {
-    private $user = null;
+    private $user = null,$system;
 
     public function init()
     {
         $this->user = new Application_Model_DbTable_User();
+        Zend_Loader::loadFile("SystemStatus.php", APPLICATION_PATH."/../library/utils/", true);
+        $this->system = new SystemStatus();
     }
 
     public function indexAction()
     {
         // action body
     }
-
     public function loginAction()
     {
         $reqParams = $this->getRequest()->getParams();
@@ -26,10 +27,21 @@ class UserController extends Zend_Controller_Action
                 $authAdapter->setCredential(md5($reqParams['password']));
                 $result = $authAdapter->authenticate();
                 if ($result->isValid()) {
+                    $user = $authAdapter->getResultRowObject();
                     $auth = Zend_Auth::getInstance();
                     $storage = $auth->getStorage();
-                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
-                    $this->redirect('/forum/list');
+                    if ($this->system->checkSystemAvailablitiy()) {
+                        $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
+                        $this->redirect('/forum/list');    
+                    } else {
+                        if ($user->is_admin) {
+                            $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));    
+                            $this->redirect('/forum/list');
+                        } else {
+                            $error = "Sorry, Site is currently offline, Check again later";
+                            $this->view->error = $error;
+                        }
+                    }
                 } else {
                     $error = 'Sorry ivalid username or password';
                     $this->view->error = $error;
