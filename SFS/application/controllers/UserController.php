@@ -53,7 +53,7 @@ class UserController extends Zend_Controller_Action
         $form = new Application_Form_Register();
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($reqParams)) {
-            	// $upload = new Zend_File_Transfer_Adapter_Http();    
+            	// $upload = new Zend_File_Transfer_Adapter_Http();
        			// $upload->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
        			$form->getElement('picture')->addFilter('Rename', array(
        				'target' => $form->getValue('username')."_".$form->getValue('picture'),
@@ -95,7 +95,7 @@ class UserController extends Zend_Controller_Action
         $form = new Application_Form_Register();
         if($this->getRequest()->isPost()){
         $this->user->editUser($data,$id);
-        $this->redirect('/user/admin-list-user');    
+        $this->redirect('/user/admin-list-user');
         }
         $user = $this->user->getUserById($id);
         $form->populate($user[0]);
@@ -126,7 +126,7 @@ $this->_helper->viewRenderer->setNoRender(true);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);   
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function makeAdminAction()
@@ -140,7 +140,7 @@ $this->_helper->viewRenderer->setNoRender(true);
             }
         }
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);      
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function adminSearchUserAction()
@@ -162,26 +162,24 @@ $this->_helper->viewRenderer->setNoRender(true);
     }
             }
 
+    public function updateuserAction(){
+
+      $id = $this->getRequest()->getParam('id');
+      #var_dump($id);
+      $data = $this->getRequest()->getParams();
+      $form = new Application_Form_Register();
+      if($this->getRequest()->isPost()){
+      $this->user->editUser($data,$id);
+      echo "you profile has been updated";
+      $this->redirect('/forum/list');
+      }
+
+      $user = $this->user->getUserById($id);
+      $form->populate($user[0]);
+      $this->view->form = $form;
+      $this->render('signup');
+
+    }
+
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

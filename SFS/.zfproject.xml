@@ -187,6 +187,8 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="adminSearchUser"/>
+            <viewControllerScriptsDirectory forControllerName="User">
+              <viewScriptFile forActionName="updateuser"/>
           <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="listcategories"/>
           </viewControllerScriptsDirectory>

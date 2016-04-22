@@ -25,8 +25,11 @@
         <ul class="nav navbar-nav navbar-right">
             <?php
               $user = Zend_Auth::getInstance();
-        if($user->hasIdentity()): ?>
+        if($user->hasIdentity()):
+            $userObj = $user->getIdentity();
+            ?>
             <li><span class="alert bg-primary"><img width="75" class='img-thumbnail img-circle' src="<?php echo $this->baseUrl(); ?>/user-uploads/<?php echo $user->getIdentity()->picture; ?>"/> <?php echo strtoupper($user->getIdentity()->username); ?></span></li>
+            <li><a href="<?php echo $this->baseUrl()?>/user/updateuser/id/<?php echo $userObj->u_id ?>"><span class="glyphicon glyphicon-user"></span>Profile Setting</a></li>
             <li><a href="<?php echo $this->baseUrl()?>/user/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
             <?php else : ?>
               <li><a href="<?php echo $this->baseUrl()?>/user/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
