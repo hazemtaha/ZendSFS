@@ -46,11 +46,61 @@ class ForumController extends Zend_Controller_Action
     public function addforumAction()
     {
         // action body
+      $data = $this->getRequest()->getParams();
+
+      $this->view->listcat = $this->category->getCategories();
+
+      $form = new Application_Form_Forum();
+
+  		if ($this->getRequest()->isPost()) {
+  		    $this->forum->addForums($data);
+  		    }
+  		    $this->view->form = $form;
     }
 
+    public function listforumsAction()
+    {
+        // action body
+        #$this->view->categories = $this->category->getCategories();
+        $this->view->forums=$this->forum->listForums();
+        $this->view->spec = $this->forum->getSpecForum();
+        #var_dump($forums);
+    }
 
-}
+    public function deleteforumAction()
+    {
+        // action body
+        $id = $this->getRequest()->getParam('id');
+        if (isset($id)) {
+          # code...
+          $this->forum->deleteForum($id);
+          $this->redirect('/forum/listforums');
+        }
+    }
 
+    public function editforumAction()
+    {
+        // action body
+        $id = $this->getRequest()->getParam('id');
+        //we have two option whether he pushed the button with the data or without the data
+        if ($this->getRequest()->isGet()){
+          if (isset($id)) {
+            # code...
+            $forumData = $this->forum->getForumById($id);
+            $editform = new Application_Form_Forum();
+            //populate her to push the array into the form
+            $editform->populate($forumData[0]);
+            $this->view->form = $editform;
+            $this->view->newId = $id;
+          }
+        }else{
+          $data = $this->getRequest()->getParams();
+          if ($this->getRequest()->isPost()) {
+            # code...
+            $this->forum->editForums($id,$data);
+          }
+          $this->redirect('/forum/listforums');
+        }
+    }
 
-
-
+    }
