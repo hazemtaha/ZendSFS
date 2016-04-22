@@ -190,14 +190,33 @@ $this->_helper->viewRenderer->setNoRender(true);
 
       $id = $this->getRequest()->getParam('id');
       #var_dump($id);
+
       $data = $this->getRequest()->getParams();
       $form = new Application_Form_Register();
+
       if($this->getRequest()->isPost()){
-      $this->user->editUser($data,$id);
+        //Despite all of these we have a null picture in our array
+
+      $form->getElement('picture')->addFilter('Rename',
+      array('target' => $form->getValue('username')."_".$form->getValue('picture'),
+      'overwrite' => true));
+
+      if ($form->getElement('picture')->receive()) {
+
+      $reqParams['picture'] = $form->getElement('picture')->getValue();
+      $this->user->editUser($data,$id,$reqParams['picture']);
+      }
       echo "you profile has been updated";
       $this->redirect('/forum/list');
+
       }
+
       $user = $this->user->getUserById($id);
+      $image = $user[0]['picture'];
+      #var_dump($image);
+
+
+
       $form->populate($user[0]);
       $this->view->form = $form;
       $this->render('signup');

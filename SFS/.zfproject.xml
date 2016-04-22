@@ -160,9 +160,6 @@
             <viewScriptFile forActionName="signup"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Category">
-            <viewScriptFile forActionName="addCategory"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="addcategory"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Admin">
