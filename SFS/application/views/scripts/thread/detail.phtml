@@ -9,11 +9,30 @@
 ?>
 <hr>
 <div class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title"><strong id="title<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['title'] ?></strong></h3><small>threaded By : <?php echo $this->thread[0]['username']?> | On: <?php echo $this->thread[0]['creation_date']?></small>
+	<div class="panel-heading" style="height:70px;">
+		<div class="col-sm-1">
+			<img src="<?php echo $this->baseUrl(); ?>/user-uploads/<?php echo $this->thread[0]['picture']; ?>" width='75' class='img-thumbnail img-circle' title ="<?php echo $this->thread[0]['username'] ?>" />
+		</div>
+		<h3 class="panel-title">
+			<div class="col-sm-11">
+				<strong id="title<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['title'] ?></strong><br><br><p>Posted By : <?php echo strtoupper($this->thread[0]['username']); ?> | On: <?php echo $this->thread[0]['creation_date'];
+					if ($lastUpdate = $this->thread[0]['last_update_date']): ?>
+					| Last Update : <?php echo $lastUpdate; ?>
+				<?php endif; ?> </p></h3>
+
+			</div>
 	</div>
 	<div class="panel-body">
 		<p id="body<?php echo $this->thread[0]['thread_id'] ?>"><?php echo $this->thread[0]['body'] ?></p>
+		<hr class="bg-primary" style="height:2px;width:95%;">
+		<h3 class="text-center text-primary">Signature</h3>
+		<div class="badge col-sm-12">
+			<div class="col-sm-12" style="height:25px;"></div><br>
+			<div class="col-sm-12">
+				<?php echo $this->thread[0]['signature']; ?>
+			</div>
+			<div class="col-sm-12" style="height:25px;"></div><br>
+		</div>
 	</div>
 	<div class="panel panel-success">
 		<div class="panel-heading">
