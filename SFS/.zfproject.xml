@@ -41,12 +41,21 @@
           <actionMethod actionName="list"/>
           <actionMethod actionName="posts"/>
           <actionMethod actionName="addforum"/>
+          <actionMethod actionName="listforums"/>
+          <actionMethod actionName="deleteforum"/>
+          <actionMethod actionName="editforum"/>
         </controllerFile>
         <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
           <actionMethod actionName="login"/>
           <actionMethod actionName="logout"/>
           <actionMethod actionName="signup"/>
+          <actionMethod actionName="adminListUser"/>
+          <actionMethod actionName="adminEditUser"/>
+          <actionMethod actionName="adminDeleteUser"/>
+          <actionMethod actionName="adminBanUser"/>
+          <actionMethod actionName="makeAdmin"/>
+          <actionMethod actionName="adminSearchUser"/>
         </controllerFile>
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
@@ -57,6 +66,7 @@
         <formFile formName="Register"/>
         <formFile formName="Thread"/>
         <formFile formName="Category"/>
+        <formFile formName="Forum"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -157,6 +167,26 @@
           <viewControllerScriptsDirectory forControllerName="Admin">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminAddUser"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminListUser"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminEditUser"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminDeleteUser"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminBanUser"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="makeAdmin"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="adminSearchUser"/>
           <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="listcategories"/>
           </viewControllerScriptsDirectory>
@@ -168,6 +198,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Forum">
             <viewScriptFile forActionName="addforum"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="listforums"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="deleteforum"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Forum">
+            <viewScriptFile forActionName="editforum"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

@@ -1,0 +1,55 @@
+<a href="<?php echo $this->baseUrl(); ?>/user/signup" class="btn btn-primary" type="button">Add New User</a> <br><br>
+<?php 
+$this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_user.js');
+$this->headScript()->appendFile($this->baseUrl().'/js/ajax_ban_user.js');
+$this->headScript()->appendFile($this->baseUrl().'/js/ajax_admin_user.js');
+$this->headScript()->appendFile($this->baseUrl().'/js/ajax_search_user.js');
+if (count($this->paginator)) :  ?>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+		<div class="pull-right">
+<span class="glyphicon glyphicon-search col-sm-2"></span>
+<input type="search" id="search" class="col-sm-10" name="search"/>		
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							ID
+						</th>
+						<th>
+							Name
+						</th>
+						<th>
+							Actions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->paginator as $users) : ?>
+					<tr id="row<?php echo $users['u_id']; ?>">
+						<td>
+							<?php echo $users['u_id']; ?>
+						</td>
+						<td>
+							<?php echo $users['username']; ?>
+						</td>
+						<td>
+							<a href="<?php echo $this->baseUrl(); ?>/user/admin-edit-user/id/<?php echo $users['u_id']; ?>" class="btn btn-primary" type="button">Edit</a>
+							<a href="" class="btn btn-warning delete-user" id="delete<?php echo $users['u_id']; ?>" type="button">Delete</a>
+							<a href="" class="btn btn-danger ban-user" id="ban<?php echo $users['u_id']; ?>" type="button">Ban</a>
+							<a href="" class="btn btn-success admin-user" id="admin<?php echo $users['u_id']; ?>" type="button">Make Admin</a>
+						</td>
+						</tr>
+					<?php endforeach; ?>	
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<?php
+	endif;
+echo $this->paginator;
+?>
