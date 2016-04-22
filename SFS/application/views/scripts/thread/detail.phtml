@@ -113,7 +113,7 @@
 			<?php endforeach; endif; ?>
 			<?php
 				$user = Zend_Auth::getInstance();
-				if ($user->hasIdentity()) :
+				if ($userObj = $user->hasIdentity() && !$this->thread[0]['is_locked'] || $userObj->is_admin) :
 			?>
 		</div>
 			<div class="form-group">
