@@ -1,7 +1,7 @@
 <?php echo $this->partial("admin/index.phtml"); ?>
 <br><br>
 <a href="<?php echo $this->baseUrl(); ?>/user/signup" class="btn btn-primary" type="button">Add New User</a> <br><br>
-<?php 
+<?php
 $this->headScript()->appendFile($this->baseUrl().'/js/ajax_delete_user.js');
 $this->headScript()->appendFile($this->baseUrl().'/js/ajax_ban_user.js');
 $this->headScript()->appendFile($this->baseUrl().'/js/ajax_admin_user.js');
@@ -13,7 +13,7 @@ if (count($this->paginator)) :  ?>
 		<div class="col-md-12">
 		<div class="pull-right">
 <span class="glyphicon glyphicon-search col-sm-2"></span>
-<input type="search" id="search" class="col-sm-10" name="search"/>		
+<input type="search" id="search" class="col-sm-10" name="search"/>
 			</div>
 			<table class="table">
 				<thead>
@@ -45,7 +45,7 @@ if (count($this->paginator)) :  ?>
 							<a href="" class="btn btn-success admin-user" id="admin<?php echo $users['u_id']; ?>" type="button">Make Admin</a>
 						</td>
 						</tr>
-					<?php endforeach; ?>	
+					<?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>

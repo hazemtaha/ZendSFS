@@ -14,31 +14,28 @@
   </thead>
 
  <?php
-      if ($this->forums){
-  			for($i=0; $i<count($this->forums); $i++){
-
+					if (count($this->paginator)) :
+						foreach ($this->paginator as $forums) :
                 ?>
 
           <tr>
-          <td><?php echo $this->forums[$i]['id'] ?></td>
-          <td><?php echo $this->spec[$i]['name'] ?></td>
-					<td><?php echo $this->forums[$i]['name'] ?></td>
+          <td><?php echo $forums['id'] ?></td>
+					<td><?php echo $forums['name'] ?></td>
+					<td><?php echo $forums['cat_name'] ?></td>
 
   				<td>
-            <a href="<?php echo $this->baseUrl();?>/forum/editforum/id/<?php echo ($this->forums[$i]['id']) ?>" class='btn btn-info' role='button'>Edit</a>
-            <a href="<?php echo $this->baseUrl();?>/forum/deleteforum/id/<?php echo ($this->forums[$i]['id']) ?>" class="btn btn-danger"> Delete</a>
+            <a href="<?php echo $this->baseUrl();?>/forum/editforum/id/<?php echo ($forums['id']) ?>" class='btn btn-info' role='button'>Edit</a>
+            <a href="<?php echo $this->baseUrl();?>/forum/deleteforum/id/<?php echo ($forums['id']) ?>" class="btn btn-danger"> Delete</a>
 
           </td>
           </tr>
   <?php
-
-	} //whiles
-
-	    }
-
+	endforeach;
+	endif;
 	?>
 
 
 
 </table>
 </div>
+<?php echo $this->paginator; ?>

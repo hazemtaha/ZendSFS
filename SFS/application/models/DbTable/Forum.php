@@ -6,7 +6,7 @@ class Application_Model_DbTable_Forum extends Zend_Db_Table_Abstract
 
     public function getForums()
     {
-      $forums = $this->select()->from('forum')->join(array('c' => 'category'), 'forum.cat_id = c.cat_id', array('c.name'))->setIntegrityCheck(false);
+      $forums = $this->select()->from('forum')->join(array('c' => 'category'), 'forum.cat_id = c.cat_id', array('c.cat_name'))->setIntegrityCheck(false);
       return $this->fetchAll($forums);
     }
 
@@ -20,7 +20,7 @@ class Application_Model_DbTable_Forum extends Zend_Db_Table_Abstract
     }
 
     function listForums(){
-      $forum = $this->select()->from('forum')->join(array('c' => 'category'), 'forum.cat_id = c.cat_id', array('c.name'))->setIntegrityCheck(false);
+      $forum = $this->select()->from('forum')->join(array('c' => 'category'), 'forum.cat_id = c.cat_id', array('c.cat_name'))->setIntegrityCheck(false);
       return $this->fetchAll($forum);
     }
 
