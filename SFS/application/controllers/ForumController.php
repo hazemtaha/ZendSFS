@@ -13,6 +13,15 @@ class ForumController extends Zend_Controller_Action
         $this->category = new Application_Model_DbTable_Category();
         $this->forum = new Application_Model_DbTable_Forum();
         $this->thread = new Application_Model_DbTable_Thread();
+        Zend_Loader::loadFile('Auth.php', APPLICATION_PATH.'/../library/utils/', true);
+        $authSystem = new Auth();
+        if ($this->getRequest()->getActionName() != 'list') {
+            if ($this->getRequest()->getActionName() != 'posts') {
+                if (!$authSystem->isAdmin()) {
+                    $this->renderScript('404.phtml');
+                }
+            }
+        }
     }
 
     public function indexAction()
