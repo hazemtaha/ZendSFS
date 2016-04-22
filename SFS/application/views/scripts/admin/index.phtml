@@ -1,12 +1,14 @@
 <!-- This is how we append javaScript file -->
 <?php
-$this->headScript()->appendFile($this->baseUrl().'/js/adminTab.js');
+$this->headScript()->appendFile($this->baseUrl().'/js/admin_tab.js');
+$this->headScript()->appendFile($this->baseUrl().'/js/ajax_lock_system.js');
 $user = Zend_Auth::getInstance();
 if($user->hasIdentity()):
 $userObj = $user->getIdentity();
 ?>
 <div class="container">
-			<h1><code>Welcome <?php echo $userObj->username ?> !!</code></h1>
+	<a class="btn btn-danger pull-right" data-toggle="button" id="lockBtn">Lock System</a>
+	<h1><code>Welcome <?php echo $userObj->username ?> !!</code></h1>
 <?php endif;  ?>
 			<ul class="nav nav-tabs" id="myTab">
 				  <li role="presentation" id="user"><a href="<?php echo $this->baseUrl(); ?>/user/admin-list-user">Users</a></li>

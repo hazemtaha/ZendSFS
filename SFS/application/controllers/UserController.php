@@ -2,18 +2,29 @@
 
 class UserController extends Zend_Controller_Action
 {
-    private $user = null;
+    private $user = null,$system,$authSystem;
 
     public function init()
     {
         $this->user = new Application_Model_DbTable_User();
+        Zend_Loader::loadFile('SystemStatus.php', APPLICATION_PATH.'/../library/utils/', true);
+        Zend_Loader::loadFile('Auth.php', APPLICATION_PATH.'/../library/utils/', true);
+        $this->system = new SystemStatus();
+        $this->authSystem = new Auth();
+        $user = Zend_Auth::getInstance();
+        if (!$user->hasIdentity()) {
+            if ($this->getRequest()->getActionName() != 'login') {
+                if ($this->getRequest()->getActionName() != 'signup') {
+                    $this->renderScript('404.phtml');
+                }
+            }
+        }
     }
 
     public function indexAction()
     {
         // action body
     }
-
     public function loginAction()
     {
         $reqParams = $this->getRequest()->getParams();
@@ -26,10 +37,21 @@ class UserController extends Zend_Controller_Action
                 $authAdapter->setCredential(md5($reqParams['password']));
                 $result = $authAdapter->authenticate();
                 if ($result->isValid()) {
+                    $user = $authAdapter->getResultRowObject();
                     $auth = Zend_Auth::getInstance();
                     $storage = $auth->getStorage();
-                    $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
-                    $this->redirect('/forum/list');
+                    if ($this->system->checkSystemAvailablitiy()) {
+                        $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
+                        $this->redirect('/forum/list');
+                    } else {
+                        if ($user->is_admin) {
+                            $storage->write($authAdapter->getResultRowObject(array('u_id', 'username', 'email', 'is_admin', 'is_active', 'gender', 'country', 'picture')));
+                            $this->redirect('/forum/list');
+                        } else {
+                            $error = 'Sorry, Site is currently offline, Check again later';
+                            $this->view->error = $error;
+                        }
+                    }
                 } else {
                     $error = 'Sorry ivalid username or password';
                     $this->view->error = $error;
@@ -86,84 +108,8 @@ class UserController extends Zend_Controller_Action
 
     public function adminListUserAction()
     {
-        $users = $this->user->listUser();
-        if (isset($users)) {
-            $paginator = Zend_Paginator::factory($users);
-            $paginator->setItemCountPerPage(5);
-            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
-            $this->view->paginator = $paginator;
-            Zend_Paginator::setDefaultScrollingStyle('Sliding');
-            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
-        }
-    }
-
-    public function adminEditUserAction()
-    {
-        $id = $this->getRequest()->getParam('id');
-        $data = $this->getRequest()->getParams();
-        $form = new Application_Form_Register();
-        if ($this->getRequest()->isPost()) {
-            $this->user->editUser($data, $id);
-            $this->redirect('/user/admin-list-user');
-        }
-        $user = $this->user->getUserById($id);
-        $form->populate($user[0]);
-        // add signature
-        $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
-        $signature->setAttrib("class", "form-control");
-        $signature->setAttrib("placeholder", "Enter Forum name ...");
-        $signature->setName("signature");
-        $signature->setLabel('Signature: ');
-        $form->addElements(array($signature));
-        $this->view->form = $form;
-        $this->render('signup');
-    }
-
-    public function adminDeleteUserAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            $id = $this->getRequest()->getParam('id');
-            if ($id) {
-                $this->user->deleteUser($id);
-            }
-        }
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-    }
-
-    public function adminBanUserAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            $id = $this->getRequest()->getParam('id');
-            if ($id) {
-                $user = $this->user->getUserById($id);
-                $isActive = $user[0]['is_active'];
-                $this->user->banUser($id, $isActive);
-            }
-        }
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-    }
-
-    public function makeAdminAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            $id = $this->getRequest()->getParam('id');
-            if ($id) {
-                $user = $this->user->getUserById($id);
-                $isAdmin = $user[0]['is_admin'];
-                $this->user->adminUser($id, $isAdmin);
-            }
-        }
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-    }
-
-    public function adminSearchUserAction()
-    {
-        $username = $this->getRequest()->getParam('value');
-        if ($username) {
-            $users = $this->user->searchUser($username);
+        if ($this->authSystem->isAdmin()) {
+            $users = $this->user->listUser();
             if (isset($users)) {
                 $paginator = Zend_Paginator::factory($users);
                 $paginator->setItemCountPerPage(5);
@@ -171,39 +117,149 @@ class UserController extends Zend_Controller_Action
                 $this->view->paginator = $paginator;
                 Zend_Paginator::setDefaultScrollingStyle('Sliding');
                 Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
-                $this->_helper->layout->disableLayout();
-                $this->_helper->viewRenderer->setNoRender(true);
             }
+        } else {
+            $this->renderScript('404.phtml');
+        }
+    }
+
+    public function adminEditUserAction()
+    {
+        if ($this->authSystem->isAdmin()) {
+            $id = $this->getRequest()->getParam('id');
+            $reqParams = $this->getRequest()->getParams();
+            $form = new Application_Form_Register();
+            if ($this->getRequest()->isPost()) {
+                $form->getElement('picture')->addFilter('Rename',
+                array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
+                'overwrite' => true, ));
+                if ($form->getElement('picture')->receive()) {
+                    $reqParams['picture'] = $form->getElement('picture')->getValue();
+                    $this->user->editUser($reqParams, $id);
+                }
+                $this->redirect('/user/admin-list-user');
+            }
+            $user = $this->user->getUserById($id);
+            $form->populate($user[0]);
+            $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
+            $signature->setAttrib("class", "form-control");
+            $signature->setAttrib("placeholder", "Enter Forum name ...");
+            $signature->setName("signature");
+            $signature->setLabel('Signature: ');
+            $form->addElements(array($signature));
+            $this->view->form = $form;
+            $this->render('signup');
+        } else {
+            $this->renderScript('404.phtml');
+        }
+        $user = $this->user->getUserById($id);
+        $form->populate($user[0]);
+        // add signature
+                $this->view->form = $form;
+        $this->render('signup');
+    }
+
+    public function adminDeleteUserAction()
+    {
+        if ($this->authSystem->isAdmin()) {
+            if ($this->getRequest()->isPost()) {
+                $id = $this->getRequest()->getParam('id');
+                if ($id) {
+                    $this->user->deleteUser($id);
+                }
+            }
+        } else {
+            $this->renderScript('404.phtml');
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+    }
+
+    public function adminBanUserAction()
+    {
+        if ($this->authSystem->isAdmin()) {
+            if ($this->getRequest()->isPost()) {
+                $id = $this->getRequest()->getParam('id');
+                if ($id) {
+                    $user = $this->user->getUserById($id);
+                    $isActive = $user[0]['is_active'];
+                    $this->user->banUser($id, $isActive);
+                }
+            }
+        } else {
+            $this->renderScript('404.phtml');
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+    }
+    public function makeAdminAction()
+    {
+        if ($this->authSystem->isAdmin()) {
+            if ($this->getRequest()->isPost()) {
+                $id = $this->getRequest()->getParam('id');
+                if ($id) {
+                    $user = $this->user->getUserById($id);
+                    $isAdmin = $user[0]['is_admin'];
+                    $this->user->adminUser($id, $isAdmin);
+                }
+            }
+        } else {
+            $this->renderScript('404.phtml');
+        }
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+    }
+
+    public function adminSearchUserAction()
+    {
+        if ($this->authSystem->isAdmin()) {
+            $username = $this->getRequest()->getParam('value');
+            if ($username) {
+                $users = $this->user->searchUser($username);
+                if (isset($users)) {
+                    $paginator = Zend_Paginator::factory($users);
+                    $paginator->setItemCountPerPage(5);
+                    $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+                    $this->view->paginator = $paginator;
+                    Zend_Paginator::setDefaultScrollingStyle('Sliding');
+                    Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+                    $this->_helper->layout->disableLayout();
+                    $this->_helper->viewRenderer->setNoRender(true);
+                }
+            }
+        } else {
+            $this->renderScript('404.phtml');
         }
     }
 
     public function updateuserAction()
     {
         $id = $this->getRequest()->getParam('id');
-        #var_dump($id);
-        $data = $this->getRequest()->getParams();
+        $reqParams = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
 
         if ($this->getRequest()->isPost()) {
-        //Despite all of these we have a null picture in our array
-        //Begin dealing with the picture
-        $form->getElement('picture')->addFilter('Rename',
-        array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
-        'overwrite' => true, ));
-
-        if ($form->getElement('picture')->receive()) {
-            $reqParams['picture'] = $form->getElement('picture')->getValue();
-            $this->user->editUser($data, $id, $reqParams['picture']);
+            //Despite all of these we have a null picture in our array
+                $form->getElement('picture')->addFilter('Rename',
+                array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
+                'overwrite' => true, ));
+            if ($form->getElement('picture')->receive()) {
+                $reqParams['picture'] = $form->getElement('picture')->getValue();
+                $this->user->editUser($reqParams, $id);
             }
-              echo 'you profile has been updated';
-              $this->redirect('/forum/list');
+            $this->redirect('/forum/list');
         }
 
         $user = $this->user->getUserById($id);
         $image = $user[0]['picture'];
-        #var_dump($user);
-        #var_dump($image);
         $form->populate($user[0]);
+        $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
+        $signature->setAttrib("class", "form-control");
+        $signature->setAttrib("placeholder", "Enter Forum name ...");
+        $signature->setName("signature");
+        $signature->setLabel('Signature: ');
+        $form->addElements(array($signature));
+
         $this->view->form = $form;
         $this->render('signup');
     }

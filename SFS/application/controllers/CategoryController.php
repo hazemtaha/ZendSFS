@@ -7,6 +7,11 @@ class CategoryController extends Zend_Controller_Action
 		/* Initialize action controller here */
 		//initalize our model at the begining
 		$this->model = new Application_Model_DbTable_Category();
+        Zend_Loader::loadFile('Auth.php', APPLICATION_PATH.'/../library/utils/', true);
+        $authSystem = new Auth();
+        if (!$authSystem->isAdmin()) {
+            $this->renderScript('404.phtml');
+        }
     }
 
     public function indexAction()
