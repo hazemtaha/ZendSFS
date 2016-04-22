@@ -56,6 +56,7 @@
           <actionMethod actionName="adminBanUser"/>
           <actionMethod actionName="makeAdmin"/>
           <actionMethod actionName="adminSearchUser"/>
+          <actionMethod actionName="verify"/>
         </controllerFile>
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
@@ -189,6 +190,7 @@
             <viewScriptFile forActionName="adminSearchUser"/>
             <viewControllerScriptsDirectory forControllerName="User">
               <viewScriptFile forActionName="updateuser"/>
+          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Category">
             <viewScriptFile forActionName="listcategories"/>
           </viewControllerScriptsDirectory>

@@ -16,16 +16,16 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
         return $this->fetchAll($threads);
     }
     function getThreadById($threadId) {
-        $threads = $this->select()->from('thread')->join(array('u' => 'users'),'thread.creator = u.u_id',array('u.username'))->where("thread.thread_id=".$threadId)->setIntegrityCheck(false);
+        $threads = $this->select()->from('thread')->join(array('u' => 'users'),'thread.creator = u.u_id',array('u.username','u.signature','u.picture'))->where("thread.thread_id=".$threadId)->setIntegrityCheck(false);
         return $this->fetchAll($threads);
 		// return $this->find($id)->toArray();
     }
-    public function getThreadDetails($threadId)
-    {
-        $threads = $this->select()->from('thread')->join(array('u' => 'users'), 'thread.creator = u.u_id', array('u.username'))->where('thread.thread_id='.$threadId)->setIntegrityCheck(false);
-
-        return $this->fetchAll($threads);
-    }
+    // public function getThreadDetails($threadId)
+    // {
+    //     $threads = $this->select()->from('thread')->join(array('u' => 'users'), 'thread.creator = u.u_id', array('u.username','u.signature'))->where('thread.thread_id='.$threadId)->setIntegrityCheck(false);
+    //
+    //     return $this->fetchAll($threads);
+    // }
     function addThread($data) {
         $user = Zend_Auth::getInstance();
         $userObj = $user->getIdentity();
@@ -43,7 +43,7 @@ class Application_Model_DbTable_Thread extends Zend_Db_Table_Abstract
         $newPost = array(
             'title'             => $data['title'],
             'body'              => $data['body'],
-            'last_update_date'  => new Zend_Date() 
+            'last_update_date'  => new Zend_Db_Expr('NOW()')
             );
         return $this->update($newPost,"thread_id=".$data['id']);
     }

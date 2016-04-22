@@ -60,5 +60,10 @@ class Application_Model_DbTable_User extends Zend_Db_Table_Abstract
         return $stmt->fetchAll()->toArray();
 
     }
+
+    function verify($username){
+        $active = array('is_active'=>1);
+        return $this->update($active,"username=".$username);
+    }
 }
 
