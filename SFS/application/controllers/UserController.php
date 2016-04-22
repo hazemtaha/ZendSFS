@@ -64,11 +64,6 @@ class UserController extends Zend_Controller_Action
          			$reqParams['picture'] = $form->getElement('picture')->getValue();
 	                if ($this->user->addUser($reqParams)) {
 
-                                
-                                if($auth->getIdentity()->is_admin){
-                                    $this->redirect('user/admin-list-user');
-                                }
-
                                 $mail = new Zend_Mail();
                             //information of user login to send message in your  mail 
                                 
