@@ -222,9 +222,9 @@ class UserController extends Zend_Controller_Action
     public function updateuserAction()
     {
         $id = $this->getRequest()->getParam('id');
-            #var_dump($id);
         $reqParams = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
+
         if ($this->getRequest()->isPost()) {
             //Despite all of these we have a null picture in our array
                 $form->getElement('picture')->addFilter('Rename',
@@ -239,12 +239,11 @@ class UserController extends Zend_Controller_Action
 
         $user = $this->user->getUserById($id);
         $image = $user[0]['picture'];
-            #var_dump($image);
-
-            $form->populate($user[0]);
+        $form->populate($user[0]);
         $this->view->form = $form;
         $this->render('signup');
     }
+
     public function verify()
     {
         $username = $this->getRequest()->getParam('username');

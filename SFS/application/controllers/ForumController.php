@@ -33,6 +33,7 @@ class ForumController extends Zend_Controller_Action
     {
         $this->view->categories = $this->category->getCategories();
         $this->view->forums = $this->forum->getForums();
+
     }
 
     public function postsAction()
@@ -62,16 +63,23 @@ class ForumController extends Zend_Controller_Action
       if ($this->getRequest()->isPost()) {
           $this->forum->addForums($data);
       }
-      $this->view->form = $form;
+          $this->view->form = $form;
     }
 
     public function listforumsAction()
     {
         // action body
-        #$this->view->categories = $this->category->getCategories();
-        $this->view->forums = $this->forum->listForums();
         $this->view->spec = $this->forum->getSpecForum();
-        #var_dump($forums);
+        $forums = $this->forum->listForums();
+        if (isset($forums)) {
+            $paginator = Zend_Paginator::factory($forums);
+            $paginator->setItemCountPerPage(5);
+            $paginator->setCurrentPageNumber($this->getRequest()->getParam('page'));
+            $this->view->paginator = $paginator;
+            Zend_Paginator::setDefaultScrollingStyle('Sliding');
+            Zend_View_Helper_PaginationControl::setDefaultViewPartial('thread/_pagination.phtml');
+        }
+
     }
 
     public function deleteforumAction()

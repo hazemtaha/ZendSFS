@@ -7,7 +7,7 @@ class Application_Model_DbTable_Category extends Zend_Db_Table_Abstract {
 	function addCategory($data) {
 
 		$row = $this->createRow();
-		$row->cat_name = $data['name'];
+		$row->cat_name = $data['cat_name'];
 		return $row->save();
 	}
 
@@ -26,7 +26,7 @@ class Application_Model_DbTable_Category extends Zend_Db_Table_Abstract {
 
 	function editCategories($id, $data){
 		$newCat = array(
-			'cat_name' => $data['name'],
+			'cat_name' => $data['cat_name'],
 		);
 		return $this->update($newCat, "cat_id=".$id);
 	}
