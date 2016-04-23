@@ -41,8 +41,28 @@ if (count($this->paginator)) :  ?>
 						<td>
 							<a href="<?php echo $this->baseUrl(); ?>/user/admin-edit-user/id/<?php echo $users['u_id']; ?>" class="btn btn-primary" type="button">Edit</a>
 							<a href="" class="btn btn-warning delete-user" id="delete<?php echo $users['u_id']; ?>" type="button">Delete</a>
+							<?php
+								if($users['is_active']){ ?>
+
+
 							<a href="" class="btn btn-danger ban-user" id="ban<?php echo $users['u_id']; ?>" type="button">Ban</a>
+
+							<?php
+								}else{ ?>
+
+								<a href="" class="btn btn-success ban-user" id="ban<?php echo $users['u_id']; ?>" type="button">UnBan</a>
+
+								<?php } ?>
+							<?php
+								if($users['is_admin']){ ?>
+								<a href="" class="btn btn-primary admin-user" id="admin<?php echo $users['u_id']; ?>" type="button">Make Regular User</a>
+
+									<?php
+								}else{ ?>
+
+
 							<a href="" class="btn btn-success admin-user" id="admin<?php echo $users['u_id']; ?>" type="button">Make Admin</a>
+							<?php } ?>
 						</td>
 						</tr>
 					<?php endforeach; ?>

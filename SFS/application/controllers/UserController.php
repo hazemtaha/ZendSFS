@@ -75,6 +75,7 @@ class UserController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($reqParams)) {
+
                 // $upload = new Zend_File_Transfer_Adapter_Http();
                    // $upload->setDestination('/var/www/html/ZendSFS/SFS/public/user-uploads/');
                    $form->getElement('picture')->addFilter('Rename', array(
@@ -99,6 +100,7 @@ class UserController extends Zend_Controller_Action
                         $this->redirect('user/login');
                     }
                 }
+
             }
         }
         $this->view->form = $form;
@@ -139,11 +141,22 @@ class UserController extends Zend_Controller_Action
             }
             $user = $this->user->getUserById($id);
             $form->populate($user[0]);
+            $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
+            $signature->setAttrib("class", "form-control");
+            $signature->setAttrib("placeholder", "Enter Forum name ...");
+            $signature->setName("signature");
+            $signature->setLabel('Signature: ');
+            $form->addElements(array($signature));
             $this->view->form = $form;
             $this->render('signup');
         } else {
             $this->renderScript('404.phtml');
         }
+        $user = $this->user->getUserById($id);
+        $form->populate($user[0]);
+        // add signature
+                $this->view->form = $form;
+        $this->render('signup');
     }
 
     public function adminDeleteUserAction()
@@ -240,6 +253,13 @@ class UserController extends Zend_Controller_Action
         $user = $this->user->getUserById($id);
         $image = $user[0]['picture'];
         $form->populate($user[0]);
+        $signature = $form->createElement('Textarea', 'signature',array('order'=>5));
+        $signature->setAttrib("class", "form-control");
+        $signature->setAttrib("placeholder", "Enter Forum name ...");
+        $signature->setName("signature");
+        $signature->setLabel('Signature: ');
+        $form->addElements(array($signature));
+
         $this->view->form = $form;
         $this->render('signup');
     }
