@@ -231,7 +231,7 @@ class UserController extends Zend_Controller_Action
                 array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
                 'overwrite' => true, ));
             if ($form->getElement('picture')->receive()) {
-                $reqParams['picture'] = $form->getElement('picture')->getValue();
+                $reqParams['picture']=$form->getElement('picture')->getValue();
                 $this->user->editUser($reqParams, $id);
             }
             $this->redirect('/forum/list');
