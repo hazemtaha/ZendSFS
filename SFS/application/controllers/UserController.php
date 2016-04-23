@@ -125,10 +125,16 @@ class UserController extends Zend_Controller_Action
     {
         if ($this->authSystem->isAdmin()) {
             $id = $this->getRequest()->getParam('id');
-            $data = $this->getRequest()->getParams();
+            $reqParams = $this->getRequest()->getParams();
             $form = new Application_Form_Register();
             if ($this->getRequest()->isPost()) {
-                $this->user->editUser($data, $id);
+                $form->getElement('picture')->addFilter('Rename',
+                array('target' => $form->getValue('username').'_'.$form->getValue('picture'),
+                'overwrite' => true, ));
+                if ($form->getElement('picture')->receive()) {
+                    $reqParams['picture'] = $form->getElement('picture')->getValue();
+                    $this->user->editUser($reqParams, $id);
+                }
                 $this->redirect('/user/admin-list-user');
             }
             $user = $this->user->getUserById($id);
@@ -217,7 +223,7 @@ class UserController extends Zend_Controller_Action
     {
         $id = $this->getRequest()->getParam('id');
             #var_dump($id);
-            $data = $this->getRequest()->getParams();
+        $reqParams = $this->getRequest()->getParams();
         $form = new Application_Form_Register();
         if ($this->getRequest()->isPost()) {
             //Despite all of these we have a null picture in our array
@@ -226,9 +232,8 @@ class UserController extends Zend_Controller_Action
                 'overwrite' => true, ));
             if ($form->getElement('picture')->receive()) {
                 $reqParams['picture'] = $form->getElement('picture')->getValue();
-                $this->user->editUser($data, $id, $reqParams['picture']);
+                $this->user->editUser($reqParams, $id);
             }
-            echo 'you profile has been updated';
             $this->redirect('/forum/list');
         }
 
